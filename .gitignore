@@ -1,2 +1,5 @@
-/WebApp/obj/*
 /WebApp/.vs/*
+/WebApp/bin/*
+/WebApp/obj/*
+/WebApp/Logs/*
+/WebApp/TestDatabase.db
