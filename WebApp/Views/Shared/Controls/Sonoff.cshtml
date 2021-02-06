@@ -10,16 +10,23 @@
                 function (event, message) {
                     var elements = $('[data-adapter-type="Mqtt:SonoffAdapter"][data-adapter-identifier=' + message.identifier + '] [data-state]');
 
-                    console.log("updating: ", message);
+                    ControlCenter.Log("updating: " + message, "info");
 
                     if (elements.length >= 1) {
                         $(elements).each(function (index, element) {
                             $(element).attr("data-state", message.payload.state == 0 ? "off" : "on");
+                            $(element).parent().removeClass("inprogress");
                         });
                     }
                 });
 
             $('[data-adapter-type="Mqtt:SonoffAdapter"]').click(function () {
+                if ($(this).hasClass("inprogress")) {
+                    return;
+                }
+
+                $(this).addClass("inprogress");
+
                 var id = $(this).attr("data-adapter-identifier");
                 var type = $(this).attr("data-adapter-type");
 

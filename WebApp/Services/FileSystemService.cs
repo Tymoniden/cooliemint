@@ -8,6 +8,7 @@ namespace WebControlCenter.Services
     public class FileSystemService : IFileSystemService
     {
         private readonly IWebHostEnvironment _hostingEnvironment;
+        private object _syncRoot = new object();
 
         public FileSystemService(IWebHostEnvironment hostingEnvironment)
         {
@@ -19,7 +20,13 @@ namespace WebControlCenter.Services
 
         public List<FileInfo> GetFilesInFolder(string path) => new List<FileInfo>(new DirectoryInfo(path).GetFiles());
 
-        public void AppendAllText(string path, string text) => File.AppendAllText(path, text);
+        public void AppendAllText(string path, string text)
+        {
+            lock (_syncRoot)
+            {
+                File.AppendAllText(path, text);
+            }
+        }
 
         public bool DirectoryExists(string directory) => Directory.Exists(directory);
 
