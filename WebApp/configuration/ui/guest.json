@@ -1,0 +1,11 @@
+{
+    "Name" : "Gast",
+    "Symbol" : "",
+    "Categories" : [
+        {
+            "Name" : "Home",
+            "Symbol" : "home",
+            "ControlModels" : [            ]
+        }
+    ]
+}

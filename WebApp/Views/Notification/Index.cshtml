@@ -1,0 +1,72 @@
+﻿@using WebControlCenter.Database.Models;
+
+@{
+    var notifications = new List<Notification>();
+
+    if (ViewData["Notifications"] is List<Notification> systemNotifications)
+    {
+        notifications.AddRange(systemNotifications);
+    }
+}
+
+<style type="text/css">
+    table.notifications {
+        width: 100%;
+    }
+
+        table.notifications thead th {
+            color: white;
+        }
+
+        table.notifications tbody tr.error td {
+            color: white;
+            background-color: darkred;
+        }
+
+        table.notifications tbody tr.info td {
+            color: aqua;
+        }
+</style>
+
+@using (Html.BeginForm("Remove", "Notification", FormMethod.Post))
+{
+    @if (notifications.Any())
+    {
+        <table class="notifications">
+            <thead>
+                <tr>
+                    <th>Notification</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var notification in notifications.Where(n => n.NotificationSeverity == NotificationSeverity.Error))
+                {
+                    <tr class="error">
+                        <td>@notification.Message</td>
+                        <td><button name="id" value="@notification.Id">X</button></td>
+                    </tr>
+                }
+
+                <tr class="seperator">
+                    <td>&nbsp;</td>
+                </tr>
+
+                @foreach (var notification in notifications.Where(n => n.NotificationSeverity == NotificationSeverity.Info))
+                {
+                    <tr class="info">
+                        <td>@notification.Message</td>
+                        <td><button name="id" value="@notification.Id">X</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="interaction">
+            <a class="button" asp-area="" asp-controller="Notification" asp-action="RemoveAll">Remove all</a><br />
+        </div>
+    } else {
+        <div>No notifications</div>
+    }
+}

@@ -1,0 +1,48 @@
+﻿@using WebControlCenter.Extensions
+@model WeatherControlModel
+
+@Html.PartialSectionScripts(
+    @<script>
+    if (!ControlCenter.IsScriptRegistered("Weather.js")) {
+        ControlCenter.RegisterScript("Weather.js");
+
+        $("body").on("Mqtt:WeatherAdapter",
+            function (event, message) {
+                var elements = $('[data-adapter-type="Mqtt:WeatherAdapter"][data-adapter-identifier=' + message.identifier + ']');
+
+                if (elements.length >= 1) {
+                    $(elements).each(function (index, element) {
+                        SetWeather($(element), message.payload);
+                    });
+                }
+            });
+
+        function SetWeather(element, weather) {
+            var minValue = parseFloat($(element).attr("data-min-value"));
+            var maxValue = parseFloat($(element).attr("data-max-value"));
+
+            var temperature = weather.temperature;
+            var displayTemperature = parseInt((weather.temperature * 10) + "") / 10;
+            temperature = minValue > temperature ? minValue : temperature;
+            temperature = maxValue < temperature ? maxValue : temperature;
+
+            var displayHumidity = parseInt((weather.humidity * 10) + "") / 10;
+            var displayPressure = parseInt((weather.pressure * 10) + "") / 10;
+
+            var range = maxValue - minValue;
+            var percentage = (temperature - minValue) / range * 100;
+            drawCircle($(element).find("div.temp-control canvas"), percentage, displayTemperature + "°");
+            drawCircleSmallText($(element).find("div.temp-control canvas"), displayHumidity+ "%");
+        }
+    }
+
+    </script>
+)
+
+<div data-adapter-type="@Html.Raw(Model.Adapter)" data-adapter-identifier="@Html.Raw(Model.Identifier)" data-min-value="@Html.Raw(Model.MinValue)" data-max-value="@Html.Raw(Model.MaxValue)">
+    <div class="label @Html.Raw(Model.Alignment == ControlAlignment.Right ? "right" : "left")">@Html.Raw(Model.Title)</div>
+
+    <div class="temp-control">
+        <canvas height="120" width="120"></canvas>
+    </div>
+</div>

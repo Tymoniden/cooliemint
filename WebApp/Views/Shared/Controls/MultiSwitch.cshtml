@@ -1,0 +1,63 @@
+﻿@using WebControlCenter.Extensions
+@model MultiSwitchControlModel
+
+@Html.PartialSectionScripts(
+    @<script>
+         if (!ControlCenter.IsScriptRegistered("MultiSwitch.js")) {
+             ControlCenter.RegisterScript("MultiSwitch.js");
+
+             $("body").on("Mqtt:MultiSwitchAdapter",
+                 function (event, message) {
+                     var elements = $('[data-adapter-type="Mqtt:MultiSwitchAdapter"][data-adapter-identifier=' + message.identifier + ']');
+
+                     if (elements.length >= 1) {
+                         $(elements).each(function (index, element) {
+                             $(message.payload.stateMapping).each(function (index, element) {
+                                 SetSwitchValueByIndex(elements, element.index, element.value.toLowerCase());
+                             });
+
+                         });
+                     }
+                 });
+
+             function SetSwitchValueByIndex(parents, index, value) {
+                 var elements = $(parents).find(".switch[data-id=" + index + "]");
+                 if ($(elements).length <= 0) { return; }
+
+                 $(elements).each(function (i, item) {
+                     $(item).attr("data-state", value);
+                 });
+             }
+
+             $('[data-adapter-type="Mqtt:MultiSwitchAdapter"] div.switch').click(function () {
+                 var id = $(this).closest('[data-adapter-type="Mqtt:MultiSwitchAdapter"]').attr("data-adapter-identifier");
+                 var index = $(this).attr("data-id");
+                 var state = $(this).attr("data-state") == "off" ? "on" : "off";
+
+                 ControlCenter.SendControlMessage("Mqtt:MultiSwitchAdapter", id, { index: index, state: state });
+             });
+         }
+     </script>
+)
+
+
+<div class="multi-switch" data-adapter-type="@Html.Raw(Model.Adapter)" data-adapter-identifier="@Html.Raw(Model.Identifier)">
+    <div class="label @Html.Raw(Model.Alignment == ControlAlignment.Right ? "right" : "left")">@Model.Title</div>
+
+    @if (Model.NumSwitches == 1)
+    {
+        <div class="switch" data-id="@Model.StartIndex" data-state="off"></div>
+    }
+
+    @if (Model.NumSwitches >= 4)
+    {
+        <div class="row">
+            @for (var i = 0; i < Model.NumSwitches; i++)
+            {
+                var runningIndex = Model.StartIndex + i;
+
+                <div class="switch" data-id="@runningIndex" data-state="off"></div>
+            }
+        </div>
+    }
+</div>

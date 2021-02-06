@@ -1,0 +1,264 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+    color: #0366d6;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+/* Sticky footer styles
+-------------------------------------------------- */
+
+/* Button style
+-------------------------------------------------- */
+a.button {
+    color: black;
+    padding: 8px 20px;
+    background-color: white;
+}
+
+    a.button:active {
+        text-decoration: none;
+    }
+
+    a.button:hover {
+        color: #b0b0b0;
+        text-decoration: none;
+        background-color: #2b333c;
+    }
+
+.interaction a {
+    display: inline-block;
+    margin-bottom: 5px;
+}
+/* Button style
+-------------------------------------------------- */
+    html {
+        position: relative;
+        min-height: 100%;
+    }
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+
+/* User menu */
+ul.user-selection {
+    list-style-type: none;
+    padding: 0;
+}
+
+    ul.user-selection li {
+        line-height: 70px;
+        height: 70px;
+        background-color: #acacac;
+        margin-bottom: 20px;
+    }
+
+        ul.user-selection li a {
+            text-decoration: none;
+            color: black;
+            font-size: 20px;
+            width: 100%;
+            height: 100%;
+            display: inline-block;
+        }
+
+            ul.user-selection li a:hover, ul.user-selection li a:active {
+                text-decoration: none;
+            }
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    background-color: #323c46;
+}
+
+    .footer ul {
+        padding: 0;
+        list-style-type: none;
+        margin: 0;
+        height: 60px;
+    }
+
+        .footer ul li {
+            float: left;
+            width: 60px;
+            height: 60px;
+            overflow: hidden;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 36px;
+            margin-right: 15px;
+        }
+
+            .footer ul li.active {
+                background-color: var(--label-background);
+            }
+
+            .footer ul li.clicked {
+                background-color: var(--inactive-color);
+            }
+
+            .footer ul li.home {
+                background-image: url("/images/icons/home_1393.svg");
+            }
+
+            .footer ul li.game {
+                background-image: url("/images/icons/game_controller_round_979.svg");
+            }
+
+            .footer ul li.office {
+                background-image: url("/images/icons/office.svg");
+            }
+
+            .footer ul li.bathroom {
+                background-image: url("/images/icons/vector/bathroom.svg");
+            }
+
+            .footer ul li.bedroom {
+                background-image: url("/images/icons/vector/bedroom.svg");
+            }
+
+            .footer ul li.heating {
+                background-image: url("/images/icons/vector/heating.svg");
+            }
+
+            .footer ul li.kitchen {
+                background-image: url("/images/icons/vector/kitchen.svg");
+            }
+
+            .footer ul li.light {
+                background-image: url("/images/icons/vector/light.svg");
+            }
+
+            .footer ul li.livingroom {
+                background-image: url("/images/icons/vector/livingroom.svg");
+            }
+
+            .footer ul li.power {
+                background-image: url("/images/icons/vector/power.svg");
+            }
+
+            .footer ul li.restroom {
+                background-image: url("/images/icons/vector/restroom.svg");
+            }
+
+            .footer ul li.diningroom {
+                background-image: url("/images/icons/vector/diningroom.svg");
+            }
+
+            .footer ul li a{
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
+
+                .footer ul li a:hover {
+                    text-decoration: none;
+                }
+
+/* customization */
+body {
+    background-color: #323c46;
+}
+
+    body > div.container{
+        width: 375px;
+    }
+
+/* navigation banner */
+.dark-gradient {
+    background-image: linear-gradient(#2b333c, #394651);
+}
+
+nav.dark-gradient {
+    border-bottom: 0px solid #000 !important;
+}
+
+nav a {
+    color: #fff;
+}
+
+nav .navbar-toggler {
+    color: rgba(0,0,0,.5);
+    border-color: rgba(0,0,0,.1);
+    position: relative;
+}
+
+nav .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(0, 0, 0, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+nav a.user-selection {
+    background-image: url("/images/icons/AssignToUser_16x.svg");
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background-size: 30px;
+}
+
+nav .navbar-toggler div.notification-icon {
+    width: 20px;
+    height: 20px;
+    background: #09cdb2;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+nav .navbar-toggler div.notification-icon.important {
+    background: red;
+}

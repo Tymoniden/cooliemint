@@ -1,0 +1,43 @@
+﻿@using WebControlCenter.Repository
+
+@{
+    ViewData["Title"] = "Debug";
+    var valueProvider = ViewData["valueProvider"] as IMqttValueProvider;
+
+}
+
+<style type="text/css">
+    table {
+        color: #fff;
+        width: 80%;
+        margin: auto;
+    }
+
+    table td.number {
+        text-align: right;
+        padding-right: 10px;
+    }
+</style>
+
+<h1>Debug</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Key</th>
+        <th>Value</th>
+        <th>TimeStamp</th>
+    </tr>
+    </thead>
+    
+    <tbody>
+    @foreach (var contract in valueProvider.GetAllContracts().OrderBy(contract => contract.Topic))
+    {
+        <tr>
+            <td>@contract.Topic</td>
+            <td class="number">@contract.Payload</td>
+            <td>@contract.TimeStamp</td>
+        </tr>
+    }
+    </tbody>
+</table>

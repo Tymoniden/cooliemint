@@ -1,0 +1,56 @@
+﻿@using WebControlCenter.Extensions
+@model ShowCaseControlModel
+
+@Html.PartialSectionScripts(
+    @<script>
+         if (!ControlCenter.IsScriptRegistered("ShowCase.js")) {
+             ControlCenter.RegisterScript("ShowCase.js");
+
+             $("body").on("Mqtt:ShowCaseAdapter",
+                 function (event, message) {
+                     var elements = $('[data-adapter-type="Mqtt:ShowCaseAdapter"][data-adapter-identifier=' + message.identifier + ']');
+
+                     if (elements.length >= 1) {
+                         $(elements).each(function (index, element) {
+                             $(message.payload.stateMapping).each(function (index, element) {
+                                 SetValueByIndex(element.index, element.value.toLowerCase());
+                             });
+                
+                         });
+                     }
+                 });
+
+             function SetValueByIndex(index, value) {
+                 var elements = $(".light-box[data-index=" + index + "]");
+                 if ($(elements).length <= 0) { return; }
+
+                 $(elements).each(function (i, item) {
+                     $(item).attr("data-state", value);
+                 });
+             }
+
+             $('[data-adapter-type="Mqtt:ShowCaseAdapter"] div.light-box').click(function () {
+                 var id = $(this).closest('[data-adapter-type="Mqtt:ShowCaseAdapter"]').attr("data-adapter-identifier");
+                 var index = $(this).attr("data-index");
+                 var state = $(this).attr("data-state") == "off" ? "on" : "off";
+
+                 ControlCenter.SendControlMessage("Mqtt:ShowCaseAdapter", id, { index: index, state: state });
+             });
+         }
+     </script>
+)
+
+    <div class="show-case" data-adapter-type="@Html.Raw(Model.Adapter)" data-adapter-identifier="@Html.Raw(Model.Identifier)">
+        <div class="label @Html.Raw(Model.Alignment == ControlAlignment.Right ? "right" : "left")">@Model.Title</div>
+        @for (var y = 0; y < Model.Rows; y++)
+        {
+            <div class="row">
+                @for (var x = 0; x < Model.Columns; x++)
+                {
+                    var runningIndex = Model.LightStartIndex + (Model.Columns * y) + x;
+
+                    <div class="light-box" data-index="@runningIndex" data-state="off"></div>
+                }
+            </div>
+        }
+    </div>

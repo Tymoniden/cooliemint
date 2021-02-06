@@ -1,0 +1,20 @@
+﻿@using WebControlCenter.Repository
+@{
+    ViewData["Title"] = "Home Page";
+    var timestamp = (DateTime?)ViewData["lastUpdateTimestamp"] ?? new DateTime(2000, 1, 1);
+    var users = ViewData["users"] as Dictionary<string, Guid>;
+}
+@section Scripts{
+    <script type="text/javascript">
+        LASTUPDATE = "@Html.Raw(timestamp.Ticks)";
+    </script>
+
+}
+<div class="text-center">
+    <ul class="user-selection">
+    @foreach (var user in users)
+    {
+        <li><a asp-controller="Home" asp-action="CurrentUser" asp-route-userName="@user.Key" target="_self">@user.Key</a></li>
+    }
+    </ul>
+</div>

@@ -1,0 +1,37 @@
+﻿@using WebControlCenter.Extensions
+@model SonoffControlModel
+
+@Html.PartialSectionScripts(
+    @<script>
+        if (!ControlCenter.IsScriptRegistered("Sonoff.js")) {
+            ControlCenter.RegisterScript("Sonoff.js");
+
+            $("body").on("Mqtt:SonoffAdapter",
+                function (event, message) {
+                    var elements = $('[data-adapter-type="Mqtt:SonoffAdapter"][data-adapter-identifier=' + message.identifier + '] [data-state]');
+
+                    console.log("updating: ", message);
+
+                    if (elements.length >= 1) {
+                        $(elements).each(function (index, element) {
+                            $(element).attr("data-state", message.payload.state == 0 ? "off" : "on");
+                        });
+                    }
+                });
+
+            $('[data-adapter-type="Mqtt:SonoffAdapter"]').click(function () {
+                var id = $(this).attr("data-adapter-identifier");
+                var type = $(this).attr("data-adapter-type");
+
+                var state = $($(this).find("[data-state]")[0]).attr("data-state").toLowerCase() == "on" ? "off" : "on";
+                ControlCenter.SendControlMessage(type, id, { state: state });
+            });
+        }
+    </script>
+)
+
+<div data-adapter-type="@Html.Raw(Model.Adapter)" data-adapter-identifier="@Html.Raw(Model.Identifier)">
+    <div class="label @Html.Raw(Model.Alignment == ControlAlignment.Right ? "right" : "left")">@Html.Raw(Model.Title)</div>
+
+    <div class="power-switch" data-state="off"></div>
+</div>

@@ -1,0 +1,121 @@
+﻿/* Basic control styles */
+.control[data-control-width=full] {
+    width: 100%;
+}
+
+.control[data-control-width=half] {
+    width: 50%;
+    float: left;
+}
+
+/* Basic labels */
+[data-adapter-type] .label {
+    color: var(--label-color);
+    background-color: var(--label-background);
+    width: 180px;
+    padding: 3px 0;
+    margin-bottom: 3px;
+}
+
+    [data-adapter-type] .label.left {
+        margin-left: -15px;
+    }
+
+    [data-adapter-type] .label.right {
+        margin-right: -15px;
+        float: right;
+    }
+
+/* Show case with basic light switches*/
+.show-case {
+    width: 100%;
+}
+
+    .show-case .label {
+        color: var(--label-color);
+        background-color: var(--label-background);
+        width: 180px;
+        padding: 3px 0;
+        margin-bottom: 3px;
+    }
+
+        .show-case .label.left {
+            margin-left: -15px;
+        }
+
+        .show-case .label.right {
+            margin-right: -15px;
+            float: right;
+        }
+
+    .show-case .row {
+        display: inline-block;
+    }
+
+/* Basic light switches */
+.light-box {
+    width: 70px;
+    height: 70px;
+    display: inline-block;
+    margin: 2px;
+}
+
+    .light-box[data-state=off] {
+        background-color: var(--inactive-color);
+    }
+
+    .light-box[data-state=on] {
+        background-color: var(--active-color);
+    }
+
+
+/* Sonoff power switches*/
+[data-adapter-type="Mqtt:SonoffAdapter"] .power-switch {
+    width: 120px;
+    height: 120px;
+    display: inline-block;
+    margin: 2px;
+}
+
+    [data-adapter-type="Mqtt:SonoffAdapter"] .power-switch[data-state=off] {
+        background-color: var(--inactive-color);
+    }
+
+    [data-adapter-type="Mqtt:SonoffAdapter"] .power-switch[data-state=on] {
+        background-color: var(--active-color);
+    }
+
+/* Multi switch */
+[data-adapter-type="Mqtt:MultiSwitchAdapter"] .row{
+    display: inline-block;
+}
+
+[data-adapter-type="Mqtt:MultiSwitchAdapter"] .switch {
+    width: 120px;
+    height: 120px;
+    display: inline-block;
+    margin: 2px;
+}
+
+[data-adapter-type="Mqtt:MultiSwitchAdapter"] .row .switch {
+    width: 70px;
+    height: 70px;
+}
+
+    [data-adapter-type="Mqtt:MultiSwitchAdapter"] .switch[data-state=off] {
+        background-color: var(--inactive-color);
+    }
+
+    [data-adapter-type="Mqtt:MultiSwitchAdapter"] .switch[data-state=on] {
+        background-color: var(--active-color);
+    }
+
+[data-adapter-type="Mqtt:TemperatureAdapter"] {
+    margin-bottom: 4px;
+}
+
+[data-adapter-type="Mqtt:TemperatureAdapter"] div.temp-control {
+    height: 120px;
+    width: 120px;
+    display: inline-block;
+}

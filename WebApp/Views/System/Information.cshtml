@@ -1,0 +1,41 @@
+﻿<style type="text/css">
+    table {
+        color: white;
+        margin-bottom: 20px;
+    }
+
+        table td {
+            padding-right: 20px;
+            border-bottom: 1px solid #7d7d7d;
+        }
+</style>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td class="key">Version</td>
+            <td>@ViewData["Version"]</td>
+        </tr>
+
+        <tr>
+            <td class="key">MqttConnected</td>
+            <td>@ViewData["MqttConnected"]</td>
+        </tr>
+
+        <tr>
+            <td class="key">#mqtt (out)</td>
+            <td>@ViewData["numMqttOut"]</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="interaction">
+    <a class="button" asp-area="" asp-controller="Log" asp-action="Index" asp-route-actionName="shutdown" target="_blank">GetLogs</a><br />
+</div>

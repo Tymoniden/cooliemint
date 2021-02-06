@@ -1,0 +1,46 @@
+﻿@using WebControlCenter.Repository
+@using WebControlCenter.Services
+@{
+    var timestamp = (DateTime?)ViewData["lastUpdateTimestamp"] ?? new DateTime(2000, 1, 1);
+    var controls = ViewData["controls"] as List<IControlModel>;
+    var configuration = ViewData["UiConfigRoot"] as UiConfigurationRoot;
+}
+@section Scripts{
+    <script type="text/javascript">
+        LASTUPDATE = "@Html.Raw(timestamp.Ticks)";
+        ControlCenter.AdapterSetup = "@configuration.Id";
+    </script>
+
+}
+<div class="text-center">
+    @foreach (var control in controls)
+    {
+        if (control.Size == ControlSize.Full)
+        {
+            <div style="clear: both"></div>
+        }
+
+        <div class="control" data-control-width="@Html.Raw(control.Size.ToString().ToLower())">
+            @{
+                switch (control)
+                {
+                    case ShowCaseControlModel showCase:
+                        <partial name="Controls/ShowCase" for="@showCase"/>
+                        break;
+                    case SonoffControlModel sonoff:
+                        <partial name="Controls/Sonoff" for="@sonoff" />
+                        break;
+                    case MultiSwitchControlModel multiSwitch:
+                        <partial name="Controls/MultiSwitch" for="@multiSwitch"/>
+                        break;
+                    case TemperatureControlModel temperature:
+                        <partial name="Controls/Temperature" for="@temperature"/>
+                        break;
+                    case WeatherControlModel weather:
+                        <partial name="Controls/Weather" for="@weather"/>
+                        break;
+                }
+            }
+        </div>
+    }
+</div>

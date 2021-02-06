@@ -1,0 +1,111 @@
+{
+  "Name": "Nicci",
+  "Symbol": "",
+  "Categories": [
+    {
+      "Name": "Home",
+      "Symbol": "home",
+      "ControlModels": [
+        {
+          "Type": "Sonoff",
+          "Title": "Licht Büro",
+          "Identifier": "sonoff9",
+          "Alignment": "Left"
+        },
+        {
+          "Type": "Sonoff",
+          "Title": "Heizung",
+          "Identifier": "sonoff8",
+          "Alignment": "Right"
+        },
+        {
+          "Type": "Sonoff",
+          "Title": "Wohnzimmerlampe",
+          "Identifier": "sonoff1",
+          "Alignment": "Left"
+        },
+        {
+          "Type": "Sonoff",
+          "Title": "Nachttisch Timo",
+          "Identifier": "sonoff3",
+          "Alignment": "Right"
+        },
+        {
+          "Type": "Sonoff",
+          "Title": "Nachttisch Nicci",
+          "Identifier": "sonoff4",
+          "Alignment": "Left"
+        },
+        {
+          "Type": "Sonoff",
+          "Title": "Heizdecke",
+          "Identifier": "sonoff2",
+          "Alignment": "Right"
+        }
+      ]
+    },
+    {
+      "Name": "Timo",
+      "Symbol": "game",
+      "ControlModels": [
+        {
+          "Type": "MultiSwitch",
+          "Title": "Timo Steckdosen",
+          "Identifier": "1",
+          "StartIndex": 1,
+          "NumSwitches": 4
+        },
+        {
+          "Type": "MultiSwitch",
+          "Title": "Timo Heizung",
+          "Identifier": "1",
+          "StartIndex": 5,
+          "NumSwitches": 1,
+          "Size": "Half"
+        },
+        {
+          "Type": "Sonoff",
+          "Title": "Nachttisch Timo",
+          "Identifier": "sonoff3",
+          "Alignment": "Right"
+        },
+        {
+          "Type": "Sonoff",
+          "Title": "Wohnzimmerlampe",
+          "Identifier": "sonoff1",
+          "Alignment": "Left"
+        },
+        {
+          "Type": "Sonoff",
+          "Title": "GästeWC",
+          "Identifier": "sonoff6",
+          "Alignment": "Right"
+        },
+        {
+          "Type": "Sonoff",
+          "Title": "Nachttisch Nicci",
+          "Identifier": "sonoff4",
+          "Alignment": "Left"
+        },
+        {
+          "Type": "Weather",
+          "Title": "Timo weather",
+          "Identifier": "1",
+          "Alignment": "Right",
+          "MinValue": 10.0,
+          "MaxValue": 40.0
+        },
+        {
+          "Type": "ShowCase",
+          "Title": "Timo Minis",
+          "Identifier": "timo_mini",
+          "Columns": 4,
+          "Rows": 2,
+          "IsRetained": false,
+          "LightStartIndex": 1,
+          "LightEndIndex": 8
+        }
+      ]
+    }
+  ]
+}

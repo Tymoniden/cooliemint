@@ -1,0 +1,111 @@
+﻿@using WebControlCenter.Extensions
+@using WebControlCenter.Services
+@using WebControlCenter.Database.Models
+
+@{ 
+    var notifications = new List<Notification>();
+
+    if(ViewData["Notifications"] is List<Notification> systemNotifications)
+    {
+        notifications.AddRange(systemNotifications);
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>CoolieMint</title>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <link rel="apple-touch-icon" href="/images/icons/touch-icon-iphone-retina.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/icons/touch-icon-ipad.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/icons/touch-icon-iphone-retina.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/images/icons/touch-icon-ipad-retina.png">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Theme.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/interactionElements.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm dark-gradient box-shadow mb-3">
+            <div class="container">
+                <a class="user-selection" asp-area="" asp-controller="Home" asp-action="Home">&nbsp;</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/Cooliemint.png" /></a>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    @if (notifications.Count > 0)
+                    {
+                        <div class="notification-icon @if (notifications.Any(n => n.NotificationSeverity == NotificationSeverity.Error)) { @Html.Raw("important"); } ">!</div>
+                    }
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li data-notifications="0" style="display:none"></li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Notification" asp-action="Index">Notifications (@notifications.Count)</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Rule" asp-action="Index">Rules</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="System" asp-action="Interaction">System actions</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="System" asp-action="Information">System information</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+
+            <div style="clear: both"></div>
+        </main>
+    </div>
+
+    @if (ViewData["UiCategories"] != null)
+    {
+        <footer class="border-top footer text-muted" style="">
+            <div class="container">
+                <ul>
+                    @foreach (var category in (UiConfigurationCategory[])ViewData["UiCategories"])
+                    {
+                        <li class="@category.Symbol @if (ViewData["CategoryName"]?.ToString() == @category.Name) { @Html.Raw(" active"); }">
+                            <a asp-controller="Home" asp-action="CurrentUser" asp-route-userName="@(((UiConfigurationRoot)ViewData["UiConfigRoot"]).Name)" asp-route-categoryName="@category.Name">&nbsp</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </footer>
+    }
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    @*<script src="~/lib/jquery-mobile/jquery.min.js"></script>
+    <script src="~/lib/jquery-mobile/jquery.mobile-1.4.5.min.js"></script>*@
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/Logger.js" asp-append-version="true"></script>
+    <script src="~/js/Controls.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+    @Html.RenderPartialSectionScripts()
+</body>
+</html>

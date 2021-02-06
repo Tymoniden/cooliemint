@@ -1,0 +1,51 @@
+[
+  {
+    "Type": "Sonoff",
+    "Arguments": { "Identifier": "sonoff1" }
+  },
+  {
+    "Type": "Sonoff",
+    "Arguments": { "Identifier": "sonoff2" }
+  },
+  {
+    "Type": "Sonoff",
+    "Arguments": { "Identifier": "sonoff3" }
+  },
+  {
+    "Type": "Sonoff",
+    "Arguments": { "Identifier": "sonoff4" }
+  },
+  {
+    "Type": "Sonoff",
+    "Arguments": { "Identifier": "sonoff5" }
+  },
+  {
+    "Type": "Sonoff",
+    "Arguments": { "Identifier": "sonoff6" }
+  },
+  {
+    "Type": "Weather",
+    "Arguments": { "Identifier": 1 }
+  },
+  {
+    "Type": "Weather",
+    "Arguments": { "Identifier": 2 }
+  },
+  {
+    "Type": "Multiswitch",
+    "Arguments": {
+      "Identifier": 1,
+      "StartIndex": 1,
+      "NumSwitches": 5
+    }
+  },
+  {
+    "Type": "Showcase",
+    "Arguments": {
+      "Identifier": "timo_mini",
+      "Columns": 4,
+      "Rows": 2,
+      "LightStartIndex": 1
+    }
+  }
+]
