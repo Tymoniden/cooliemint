@@ -121,7 +121,7 @@
     <value>Logs</value>
   </data>
   <data name="MQTTClientId" xml:space="preserve">
-    <value>WebControlCenter_dev2</value>
+    <value>WebControlCenter</value>
   </data>
   <data name="MQTTServerAdress" xml:space="preserve">
     <value>192.168.2.128</value>
