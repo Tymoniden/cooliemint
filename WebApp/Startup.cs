@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 using System.Diagnostics;
 using WebControlCenter.CommandAdapter;
+using WebControlCenter.CustomCommand;
 using WebControlCenter.Database.Repository;
 using WebControlCenter.Database.Services;
 using WebControlCenter.Repository;
@@ -76,6 +77,9 @@ namespace WebControlCenter
             services.AddSingleton<IEntityRepository, EntityRepository>();
 
             services.AddSingleton<INotificationService, NotificationService>();
+
+            services.AddSingleton<IControllerActionRegistrationService, ControllerActionRegistrationService>();
+            services.AddSingleton<ICustomCommandService, CustomCommandService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
