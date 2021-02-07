@@ -85,9 +85,6 @@
         background-color: var(--active-color);
     }
 
-
-
-
 [data-adapter-type="Mqtt:SonoffAdapter"].inprogress .power-switch[data-state=off],
 [data-adapter-type="Mqtt:SonoffAdapter"].inprogress .power-switch[data-state=on],
 [data-adapter-type="Mqtt:MultiSwitchAdapter"].inprogress .switch[data-state=off],

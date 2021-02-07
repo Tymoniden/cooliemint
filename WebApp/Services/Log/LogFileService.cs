@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using WebControlCenter.Services.FileSystem;
+using WebControlCenter.Services.Setting;
 
 namespace WebControlCenter.Services.Log
 {
@@ -20,7 +21,7 @@ namespace WebControlCenter.Services.Log
             _fileSystemService = fileSystemService ?? throw new ArgumentNullException(nameof(fileSystemService));
             _settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
             _folderService = folderService ?? throw new ArgumentNullException(nameof(folderService));
-            _logDirectory = _settingsService.GetValue<string>("LogDirectory");
+            _logDirectory = _settingsService.GetSettings().LogDirectory;
 
             if (!_fileSystemService.DirectoryExists(_logDirectory))
             {

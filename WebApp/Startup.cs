@@ -15,6 +15,7 @@ using WebControlCenter.Services.FileSystem;
 using WebControlCenter.Services.Log;
 using WebControlCenter.Services.Log.Sink;
 using WebControlCenter.Services.Mqtt;
+using WebControlCenter.Services.Setting;
 using WebControlCenter.Services.Storage;
 using WebControlCenter.Services.System;
 
@@ -91,7 +92,8 @@ namespace WebControlCenter
             ISettingsService settingsService,
             IFileSystemService fileSystemService,
             ILogFormatterService logFormatterService,
-            ILogFileService logFileService)
+            ILogFileService logFileService,
+            ISettingsProvider settingsProvider)
         {
             if (env.IsDevelopment())
             {
@@ -113,6 +115,8 @@ namespace WebControlCenter
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            settingsProvider.ReadSettings();
 
             logService.RegisterSinks(new List<IlogSink>
             {
