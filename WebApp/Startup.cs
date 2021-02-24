@@ -15,6 +15,7 @@ using WebControlCenter.Services.FileSystem;
 using WebControlCenter.Services.Log;
 using WebControlCenter.Services.Log.Sink;
 using WebControlCenter.Services.Mqtt;
+using WebControlCenter.Services.Rest;
 using WebControlCenter.Services.Setting;
 using WebControlCenter.Services.Storage;
 using WebControlCenter.Services.System;
@@ -76,6 +77,11 @@ namespace WebControlCenter
             services.AddSingleton<IEntityRepository, EntityRepository>();
 
             services.AddSingleton<INotificationService, NotificationService>();
+
+            // REST API services
+            services.AddSingleton<IUserFactory, UserFactory>();
+            services.AddSingleton<IPageFactory, PageFactory>();
+            services.AddSingleton<IControlFactory, ControlFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

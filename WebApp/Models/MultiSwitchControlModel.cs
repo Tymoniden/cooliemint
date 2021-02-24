@@ -16,6 +16,8 @@ namespace WebControlCenter.Models
             StartIndex = arguments.StartIndex;
         }
 
+        public Guid Id { get; set; }
+
         public string Identifier { get; set; }
 
         public int StartIndex { get; set; }

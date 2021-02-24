@@ -10,5 +10,6 @@ namespace WebControlCenter.Services
         UiConfigurationRoot GetConfiguration(string name);
 
         Dictionary<string, Guid> GetConfiguredUsers();
+        Dictionary<string, UiConfigurationRoot> GetConfiguration();
     }
 }

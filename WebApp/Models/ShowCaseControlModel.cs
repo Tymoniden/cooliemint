@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WebControlCenter.CommandAdapter.ShowCase;
 using WebControlCenter.Repository;
 
@@ -18,6 +19,7 @@ namespace WebControlCenter.Models
             LightStartIndex = arguments.LightStartIndex;
         }
 
+        public Guid Id { get; set; }
         public string Identifier { get; set; }
         public string Title { get; set; }
         public string Adapter { get; set; } = "Mqtt:ShowCaseAdapter";

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Routing.Template;
-using Newtonsoft.Json.Linq;
 
 namespace WebControlCenter.Services
 {
@@ -49,18 +47,7 @@ namespace WebControlCenter.Services
         }
 
         public UiConfigurationRoot GetConfiguration(string name) => _configurations[name];
-    }
 
-    public class UiConfigurationRoot{
-        public string Name { get; set; }
-        public string Symbol { get; set; }
-        public Guid? Id { get; set; }
-        public UiConfigurationCategory[] Categories { get; set; }
-    }
-
-    public class UiConfigurationCategory{
-        public string Name { get; set; }
-        public string Symbol { get; set; }
-        public JObject[] ControlModels { get; set; }
+        public Dictionary<string, UiConfigurationRoot> GetConfiguration() => _configurations;
     }
 }

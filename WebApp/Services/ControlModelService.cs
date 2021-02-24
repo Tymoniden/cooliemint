@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using WebControlCenter.Models;
 
 namespace WebControlCenter.Services
@@ -13,23 +13,32 @@ namespace WebControlCenter.Services
     {
         public IControlModel Convert(JObject jObject)
         {
+            IControlModel controlModel = null;
             var property = jObject.Property("Type");
             if(property.HasValues){
+                
                 switch(property.Value.ToString()){
                     case "ShowCase":
-                        return (ShowCaseControlModel) jObject.ToObject(typeof(ShowCaseControlModel));
+                        controlModel = (ShowCaseControlModel) jObject.ToObject(typeof(ShowCaseControlModel));
+                        break;
                     case "Sonoff":
-                        return (SonoffControlModel) jObject.ToObject(typeof(SonoffControlModel));
+                        controlModel = (SonoffControlModel) jObject.ToObject(typeof(SonoffControlModel));
+                        break;
                     case "MultiSwitch":
-                        return (MultiSwitchControlModel) jObject.ToObject(typeof(MultiSwitchControlModel));
+                        controlModel = (MultiSwitchControlModel) jObject.ToObject(typeof(MultiSwitchControlModel));
+                        break;
                     case "Temperature":
-                        return (TemperatureControlModel) jObject.ToObject(typeof(TemperatureControlModel));
+                        controlModel = (TemperatureControlModel) jObject.ToObject(typeof(TemperatureControlModel));
+                        break;
                     case "Weather":
-                        return (WeatherControlModel) jObject.ToObject(typeof(WeatherControlModel));
+                        controlModel = (WeatherControlModel) jObject.ToObject(typeof(WeatherControlModel));
+                        break;
                 }
+
+                controlModel.Id = controlModel.Id == Guid.Empty ? Guid.NewGuid() : controlModel.Id;
             }
 
-            return null;
+            return controlModel;
         }
     }
 }

@@ -39,7 +39,6 @@ namespace WebControlCenter.Controllers
         public async Task<JsonResult> GetStatus(long ticks, string adapterSetupId)
         {
             var timestamp = new DateTime(ticks);
-            _logService.LogInfo($"GetStatus[{timestamp.ToLongTimeString()}]");
             var adapters = _adapterSettingService.GetAdapters(adapterSetupId);
             var tokenSource = new CancellationTokenSource(new TimeSpan(0, 1, 0));
 
