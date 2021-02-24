@@ -9,6 +9,7 @@ namespace WebControlCenter.Services
         string CombinePath(string path1, string path2);
         DirectoryInfo CreateDirectory(string path);
         bool DirectoryExists(string directory);
+        string GetConfigurationPath();
         List<FileInfo> GetFilesInFolder(string path);
         long GetFileSize(string path);
         long GetFolderContentSize(string path);
@@ -16,5 +17,6 @@ namespace WebControlCenter.Services
         string ReadFileAsString(string filename);
 
         string[] ReadFilesInFolder(string folder);
+        void WriteAllText(string path, string content);
     }
 }

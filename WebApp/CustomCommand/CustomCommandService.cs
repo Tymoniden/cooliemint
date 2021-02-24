@@ -1,46 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebControlCenter.Services.Log;
+using WebControlCenter.Services.SmartDevice;
 
 namespace WebControlCenter.CustomCommand
 {
     public class CustomCommandService : ICustomCommandService
     {
         private readonly IControllerActionRegistrationService _controllerActionRegistrationService;
-
+        private readonly IDeviceOperationProvider _deviceOperationProvider;
+        private readonly ILogService _logService;
         Dictionary<Command, Action> _registeredCommands = new Dictionary<Command, Action>();
 
-        public CustomCommandService(IControllerActionRegistrationService controllerActionRegistrationService)
+        public CustomCommandService(IControllerActionRegistrationService controllerActionRegistrationService, IDeviceOperationProvider deviceOperationProvider, ILogService logService)
         {
             _controllerActionRegistrationService = controllerActionRegistrationService ?? throw new ArgumentNullException(nameof(controllerActionRegistrationService));
-
-            RegisterCommand(new Command
-            {
-                Id = 0,
-                Name = "Timo Büro aus",
-                CallingIdentifier = "1",
-                Actions = new List<ControllerAction>
-                {
-                    new ControllerAction
-                    {
-                        Id = 0,
-                        Name = "Sonoff:2:Off",
-                        Order = 1
-                    },
-                    new ControllerAction
-                    {
-                        Id = 1,
-                        Name = "Sonoff:1:Off",
-                        Order = 0
-                    },
-                    new ControllerAction
-                    {
-                        Id = 2,
-                        Name = "Sonoff:3:Off",
-                        Order = 2
-                    }
-                }
-            });
+            _deviceOperationProvider = deviceOperationProvider ?? throw new ArgumentNullException(nameof(deviceOperationProvider));
+            _logService = logService ?? throw new ArgumentNullException(nameof(logService));
         }
 
         public Command GetCommand(string callingIdentifier)
@@ -56,7 +33,13 @@ namespace WebControlCenter.CustomCommand
             var actions = new List<Action>();
             foreach (var x in command.Actions.OrderBy(a => a.Order))
             {
-                actions.Add(_controllerActionRegistrationService.GetControllerAction(x.Name));
+                var operation = _deviceOperationProvider.GetOperation(x.Name);
+                if(operation == null)
+                {
+                    continue;
+                }
+
+                actions.Add(operation.Action);
             }
 
             Action commandAction = () =>
@@ -77,6 +60,7 @@ namespace WebControlCenter.CustomCommand
                 return false;
             }
 
+            _logService.LogInfo($"Executing command {command.Name}");
             _registeredCommands[command].Invoke();
             return true;
         }

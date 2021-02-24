@@ -11,6 +11,8 @@ namespace WebControlCenter.CustomCommand
 
         public string Name { get; set; }
 
+        public string Description { get; set; }
+
         public string CallingIdentifier { get; set; }
 
         public List<ControllerAction> Actions { get; set; }

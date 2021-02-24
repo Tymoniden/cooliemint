@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using WebControlCenter.CommandAdapter;
 
@@ -11,6 +12,7 @@ namespace WebControlCenter.Services
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IFileSystemService _fileSystemService;
         private readonly IJsonSerializerService _jsonSerializerService;
+        List<MqttAdapterEntry> _adapterEntries = new List<MqttAdapterEntry>();
 
         public MqttAdapterService(IMqttAdapterFactory mqttAdapterFactory,IWebHostEnvironment webHostEnvironment, IFileSystemService fileSystemService, IJsonSerializerService jsonSerializerService)
         {
@@ -23,18 +25,21 @@ namespace WebControlCenter.Services
         public List<IMqttAdapter> ReadConfiguration()
         {
             var adapters = new List<IMqttAdapter>();
-            var adapterEntries = ReadConfigFile();
-            foreach (var adapterEntry in adapterEntries)
+            foreach (var adapterEntry in ReadConfigFile())
             {
                 var adapter = _mqttAdapterFactory.CreateMqttAdapter(adapterEntry);
                 if(adapter != null)
                 {
                     adapters.Add(adapter);
                 }
+
+                _adapterEntries.Add(adapterEntry);
             }
 
             return adapters;
         }
+
+        public List<MqttAdapterEntry> GetAdapterEntries() => _adapterEntries;
 
         MqttAdapterEntry[] ReadConfigFile()
         {
