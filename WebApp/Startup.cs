@@ -10,6 +10,7 @@ using WebControlCenter.Database.Repository;
 using WebControlCenter.Database.Services;
 using WebControlCenter.Repository;
 using WebControlCenter.Services;
+using WebControlCenter.Services.Control;
 using WebControlCenter.Services.Database;
 using WebControlCenter.Services.FileSystem;
 using WebControlCenter.Services.Log;
@@ -82,6 +83,8 @@ namespace WebControlCenter
             services.AddSingleton<IUserFactory, UserFactory>();
             services.AddSingleton<IPageFactory, PageFactory>();
             services.AddSingleton<IControlFactory, ControlFactory>();
+            services.AddSingleton<IStateCacheService, StateCacheService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
