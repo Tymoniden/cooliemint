@@ -8,14 +8,13 @@ namespace WebControlCenter.CustomCommand
 {
     public class CustomCommandService : ICustomCommandService
     {
-        private readonly IControllerActionRegistrationService _controllerActionRegistrationService;
         private readonly IDeviceOperationProvider _deviceOperationProvider;
         private readonly ILogService _logService;
         Dictionary<Command, Action> _registeredCommands = new Dictionary<Command, Action>();
+        List<string> _executingCommand = new List<string>();
 
-        public CustomCommandService(IControllerActionRegistrationService controllerActionRegistrationService, IDeviceOperationProvider deviceOperationProvider, ILogService logService)
+        public CustomCommandService(IDeviceOperationProvider deviceOperationProvider, ILogService logService)
         {
-            _controllerActionRegistrationService = controllerActionRegistrationService ?? throw new ArgumentNullException(nameof(controllerActionRegistrationService));
             _deviceOperationProvider = deviceOperationProvider ?? throw new ArgumentNullException(nameof(deviceOperationProvider));
             _logService = logService ?? throw new ArgumentNullException(nameof(logService));
         }
@@ -60,8 +59,23 @@ namespace WebControlCenter.CustomCommand
                 return false;
             }
 
+            if (_executingCommand.Contains(command.CallingIdentifier))
+            {
+                return true;
+            }
+
+            lock (_executingCommand)
+            {
+                _executingCommand.Add(command.CallingIdentifier);
+            }
+
             _logService.LogInfo($"Executing command {command.Name}");
             _registeredCommands[command].Invoke();
+
+            lock (_executingCommand)
+            {
+                _executingCommand.Remove(command.CallingIdentifier);
+            }
             return true;
         }
     }
