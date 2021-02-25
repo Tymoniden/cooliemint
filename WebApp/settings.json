@@ -1,7 +1,7 @@
 {
   "LogDirectory": "Logs",
-  "MqttServerAdress": "192.168.2.127",
-  "MqttClientId": "CoolieMint_WebApp",
+  "MqttServerAdress": "192.168.2.128",
+  "MqttClientId": "CoolieMint_WebApp_dev",
   "MqttClientUsername": null,
   "MqttClientPassword": null
 }

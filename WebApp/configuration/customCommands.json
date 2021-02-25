@@ -1,0 +1,28 @@
+[
+  {
+    "Id": 0,
+    "Name": "Timo Büro aus",
+    "CallingIdentifier": "1",
+    "Description": "Deckenlicht in Timos Zimmer aus.",
+    "Actions": [
+      {
+        "Id": 0,
+        "Name": "Sonoff:sonoff1:Off",
+        "Order": 0
+      }
+    ]
+  },
+  {
+    "Id": 1,
+    "Name": "Timo Büro an",
+    "CallingIdentifier": "2",
+    "Description": "Deckenlicht in Timos Zimmer an.",
+    "Actions": [
+      {
+        "Id": 0,
+        "Name": "Sonoff:sonoff1:On",
+        "Order": 0
+      }
+    ]
+  }
+]

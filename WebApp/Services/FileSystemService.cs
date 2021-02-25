@@ -20,6 +20,8 @@ namespace WebControlCenter.Services
 
         public List<FileInfo> GetFilesInFolder(string path) => new List<FileInfo>(new DirectoryInfo(path).GetFiles());
 
+        public void WriteAllText(string path, string content) => File.WriteAllText(path, content);
+
         public void AppendAllText(string path, string text)
         {
             lock (_syncRoot)
@@ -55,6 +57,8 @@ namespace WebControlCenter.Services
                 return Path.Combine(_hostingEnvironment.ContentRootPath, path);
             }
         }
+
+        public string GetConfigurationPath() => Path.Combine(_hostingEnvironment.ContentRootPath, "configuration");
 
         public long GetFolderContentSize(string path)
         {

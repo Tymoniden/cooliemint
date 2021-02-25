@@ -5,6 +5,7 @@ namespace WebControlCenter.Services
 {
     public interface IMqttAdapterService
     {
+        List<MqttAdapterEntry> GetAdapterEntries();
         List<IMqttAdapter> ReadConfiguration();
     }
 }

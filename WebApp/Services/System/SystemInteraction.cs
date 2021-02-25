@@ -4,6 +4,8 @@
     {
         Shutdown,
         DisconnectMqtt,
-        ConnectMqtt
+        ConnectMqtt,
+        ReloadCustomCommands,
+        ReloadUiConfiguration
     }
 }
