@@ -70,7 +70,7 @@ namespace WebControlCenter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WebControlCenter_dev.
+        ///   Looks up a localized string similar to WebControlCenter.
         /// </summary>
         public static string MQTTClientId {
             get {

@@ -11,11 +11,12 @@
                      var elements = $('[data-adapter-type="Mqtt:ShowCaseAdapter"][data-adapter-identifier=' + message.identifier + ']');
 
                      if (elements.length >= 1) {
-                         $(elements).each(function (index, element) {
+                         $(elements).each(function (index, parent) {
                              $(message.payload.stateMapping).each(function (index, element) {
                                  SetValueByIndex(element.index, element.value.toLowerCase());
                              });
-                
+
+                             $(parent).removeClass("inprogress");
                          });
                      }
                  });
@@ -30,6 +31,12 @@
              }
 
              $('[data-adapter-type="Mqtt:ShowCaseAdapter"] div.light-box').click(function () {
+                 if ($(this).hasClass("inprogress")) {
+                     return;
+                 }
+
+                 $(this).closest("[data-adapter-type]").addClass("inprogress");
+
                  var id = $(this).closest('[data-adapter-type="Mqtt:ShowCaseAdapter"]').attr("data-adapter-identifier");
                  var index = $(this).attr("data-index");
                  var state = $(this).attr("data-state") == "off" ? "on" : "off";

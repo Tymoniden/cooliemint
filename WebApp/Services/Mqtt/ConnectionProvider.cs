@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using WebControlCenter.Services.Log;
+using WebControlCenter.Services.Setting;
 
 namespace WebControlCenter.Services.Mqtt
 {
@@ -199,16 +200,16 @@ namespace WebControlCenter.Services.Mqtt
         IMqttClientOptions GetConnectionOptions()
         {
             var options = new MqttClientOptionsBuilder()
-                .WithTcpServer(_settingsService.GetValue<string>("MQTTServerAdress"))
+                .WithTcpServer(_settingsService.GetSettings().MqttServerAdress)
                 .WithCleanSession();
 
-            options.WithClientId(_settingsService.GetValue<string>("MQTTClientId"));
+            options.WithClientId(_settingsService.GetSettings().MqttClientId);
 
-            if (!string.IsNullOrWhiteSpace(_settingsService.GetValue<string>("MQTTServerUsername")))
+            if (!string.IsNullOrWhiteSpace(_settingsService.GetSettings().MqttClientUsername))
             {
                 options.WithCredentials(
-                    _settingsService.GetValue<string>("MQTTServerUsername"),
-                    _settingsService.GetValue<string>("MQTTServerPassword")
+                    _settingsService.GetSettings().MqttClientUsername,
+                    _settingsService.GetSettings().MqttClientPassword
                 );
             }
 

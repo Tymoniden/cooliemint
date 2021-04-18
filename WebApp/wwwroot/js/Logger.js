@@ -16,7 +16,7 @@
 }
 
 ControlCenter.LogCallbacks = {
-    Info: function (message) { /*$("footer div.container").text(message);*/ },
+    Info: function (message) { console.log(message); },
     Debug: function (message) { console.log(message); },
     Error: function (message) { console.log(message); },
     Critical: function (message) { console.log(message); }

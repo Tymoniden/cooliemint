@@ -85,6 +85,15 @@
         background-color: var(--active-color);
     }
 
+[data-adapter-type="Mqtt:SonoffAdapter"].inprogress .power-switch[data-state=off],
+[data-adapter-type="Mqtt:SonoffAdapter"].inprogress .power-switch[data-state=on],
+[data-adapter-type="Mqtt:MultiSwitchAdapter"].inprogress .switch[data-state=off],
+[data-adapter-type="Mqtt:MultiSwitchAdapter"].inprogress .switch[data-state=on],
+[data-adapter-type="Mqtt:ShowCaseAdapter"].inprogress .light-box[data-state=off],
+[data-adapter-type="Mqtt:ShowCaseAdapter"].inprogress .light-box[data-state=on] {
+    background-color: var(--inprogress-color);
+}
+
 /* Multi switch */
 [data-adapter-type="Mqtt:MultiSwitchAdapter"] .row{
     display: inline-block;

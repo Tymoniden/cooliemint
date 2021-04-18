@@ -25,6 +25,8 @@
 };
 
 ControlCenter.SendControlMessage = function (adapter, id, payload) {
+    ControlCenter.Log("Sending control message" , "info");
+
     $.ajax({
         url: "/api/v1/SendControlMessage",
         type: "POST",
