@@ -3,3 +3,9 @@
 /WebApp/obj/*
 /WebApp/Logs/*
 /WebApp/TestDatabase.db
+/CloudGateWay/bin/*
+/CloudGateWay/obj/*
+/CloudGateWay/.vs/*
+/Desktop/bin/*
+/Desktop/obj/*
+/Desktop/.vs/*
