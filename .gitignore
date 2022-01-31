@@ -18,6 +18,7 @@ CoolieMint.WebApp.Tests/obj/*
 CoolieMint.WebApp/obj/*
 CoolieMint.WebApp/bin/*
 CoolieMint.WebApp/.vs/*
+CoolieMint.WebApp/Logs/*
 CoolieMint.WebClient/bin/*
 CoolieMint.WebClient/obj/*
 CoolieMint.WindowsClient/bin/*
@@ -28,3 +29,4 @@ CoolieMint.WebApp/.config/dotnet-tools.json
 CoolieMint.Starter/Properties/PublishProfiles/FolderProfile.pubxml.user
 CoolieMint.Starter/Properties/PublishProfiles/FolderProfile.pubxml.user
 CoolieMint.WebApp/TestDatabase.db
+CoolieMint.WebApp/migration.txt
