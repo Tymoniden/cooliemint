@@ -2,12 +2,14 @@
 using CoolieMint.WindowsClient.Services.CoolieMint;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace CoolieMint.WindowsClient.ViewModels
@@ -56,7 +58,7 @@ namespace CoolieMint.WindowsClient.ViewModels
             {
                 HttpClient client = new HttpClient();
                 // Update port # in the following line.
-                client.BaseAddress = new Uri("http://localhost:59719/");
+                client.BaseAddress = new Uri("http://192.168.2.128/");
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("application/json"));
@@ -72,6 +74,8 @@ namespace CoolieMint.WindowsClient.ViewModels
 
                     HttpResponseMessage response = await client.PostAsJsonAsync($"api/v2/Upgrade", upgradeModel);
                     response.EnsureSuccessStatusCode();
+                    var content = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine(content);
 
                     // Deserialize the updated product from the response body.
                     //product = await response.Content.ReadAsAsync<Product>();
