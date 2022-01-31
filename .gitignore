@@ -1,3 +1,4 @@
+.vs/*
 /WebApp/.vs/*
 /WebApp/bin/*
 /WebApp/obj/*
@@ -9,3 +10,20 @@
 /Desktop/bin/*
 /Desktop/obj/*
 /Desktop/.vs/*
+CoolieMint.Api/obj*
+CoolieMint.Starter/bin/*
+CoolieMint.Starter/obj/*
+CoolieMint.WebApp.Tests/bin/*
+CoolieMint.WebApp.Tests/obj/*
+CoolieMint.WebApp/obj/*
+CoolieMint.WebApp/bin/*
+CoolieMint.WebApp/.vs/*
+CoolieMint.WebClient/bin/*
+CoolieMint.WebClient/obj/*
+CoolieMint.WindowsClient/bin/*
+CoolieMint.WindowsClient/obj/*
+CoolieMint.Updater/obj/*
+CoolieMint.Updater/bin/*
+CoolieMint.WebApp/.config/dotnet-tools.json
+CoolieMint.Starter/Properties/PublishProfiles/FolderProfile.pubxml.user
+CoolieMint.Starter/Properties/PublishProfiles/FolderProfile.pubxml.user

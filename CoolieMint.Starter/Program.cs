@@ -14,12 +14,20 @@ if(directory == null)
     return;
 }
 
-var targetFile = directory.GetFiles().FirstOrDefault(f => f.Name.Equals("WebControlCenter"));
+var targetFile = directory.GetFiles().FirstOrDefault(f => f.Name.Equals("CoolieMint.WebApp"));
 if(targetFile == null)
 {
     Console.WriteLine("Target file not found.");
     return;
 }
+
+var updaterStartInfo = new ProcessStartInfo
+{
+    FileName = "updater.sh"
+};
+
+var updaterProcess = Process.Start(updaterStartInfo);
+updaterProcess?.WaitForExit();
 
 var processStartInfo = new ProcessStartInfo
 {
