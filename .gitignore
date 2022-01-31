@@ -27,3 +27,4 @@ CoolieMint.Updater/bin/*
 CoolieMint.WebApp/.config/dotnet-tools.json
 CoolieMint.Starter/Properties/PublishProfiles/FolderProfile.pubxml.user
 CoolieMint.Starter/Properties/PublishProfiles/FolderProfile.pubxml.user
+CoolieMint.WebApp/TestDatabase.db

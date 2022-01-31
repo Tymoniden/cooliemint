@@ -1,0 +1,85 @@
+[
+  {
+    "Id": 0,
+    "Name": "Timo Büro aus",
+    "CallingIdentifier": "1",
+    "Description": "Timo Büromodus aus (Licht, Monitor, Heizung).",
+    "Actions": [
+      {
+        "Id": 0,
+        "Name": "Sonoff:sonoff1:Off",
+        "Order": 0
+      }
+    ]
+  },
+  {
+    "Id": 1,
+    "Name": "Timo Büro an",
+    "CallingIdentifier": "2",
+    "Description": "Timo Büromodus an (Licht, Monitor, Heizung).",
+    "Actions": [
+      {
+        "Id": 0,
+        "Name": "Sonoff:sonoff1:On",
+        "Order": 0
+      }
+    ]
+  },
+  {
+    "Id": 2,
+    "Name": "Timo Licht aus",
+    "CallingIdentifier": "3",
+    "Description": "Deckenlicht in Timos Zimmer aus.",
+    "Actions": [
+      {
+        "Id": 0,
+        "Name": "Sonoff:sonoff1:Off",
+        "Order": 0
+      }
+    ]
+  },
+  {
+    "Id": 3,
+    "Name": "Timo Licht an",
+    "CallingIdentifier": "4",
+    "Description": "Deckenlicht in Timos Zimmer an.",
+    "Actions": [
+      {
+        "Id": 0,
+        "Name": "Sonoff:sonoff1:On",
+        "Order": 0
+      }
+    ]
+  },
+  {
+    "Id": 4,
+    "Name": "Timo Nachttisch an",
+    "CallingIdentifier": "5",
+    "Description": "",
+    "Actions": [
+      {
+        "Id": 0,
+        "Name": "Sonoff:sonoff3:On",
+        "Order": 0
+      }
+    ]
+  },
+  {
+    "Id": 5,
+    "Name": "Timo Nachttisch aus",
+    "CallingIdentifier": "6",
+    "Description": "",
+    "Actions": [
+      {
+        "Id": 0,
+        "Name": "Sonoff:sonoff3:Off",
+        "Order": 0
+      },
+      {
+        "Id": 1,
+        "Name": "Sonoff:sonoff1:Off",
+        "Order": 1
+      }
+    ]
+  }
+]
