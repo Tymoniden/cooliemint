@@ -35,7 +35,7 @@ namespace CoolieMint.WebApp.Services.Notification.Pushover
 
                 return message;
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 throw;
             }

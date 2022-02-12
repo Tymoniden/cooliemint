@@ -30,7 +30,7 @@ namespace WebControlCenter.Automation.Services
         public Rule ParseRule(JObject jObject)
         {
             var rule = new Rule();
-            rule.Name = jObject["Name"].ToString();
+            rule.DisplayName = jObject["Name"].ToString();
 
             //rule.Condition = _parseConditionService.ParseCondition((JObject)jObject["Condition"]);
             rule.OnTrue = _actionDescriptorService.ParseActionDescriptors((JArray)jObject["OnTrue"]);

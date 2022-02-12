@@ -71,6 +71,8 @@ namespace CoolieMint.WebApp.Services.Mqtt
         async Task ReconnectClient(CancellationToken cancellationToken)
         {
             var spin = new SpinWait();
+            var cancellationTokenSource = new CancellationTokenSource();
+            var timeoutInSeconds = 2;
 
             while (!cancellationToken.IsCancellationRequested && _ensurceClientIsConnected)
             {
@@ -78,7 +80,22 @@ namespace CoolieMint.WebApp.Services.Mqtt
                 {
                     _logService.LogInfo($"[MqttConnectionProvider] ... reconnecting MqttClient");
 
-                    await _client.ReconnectAsync();
+                    try
+                    {
+                        cancellationTokenSource.Cancel();
+                        cancellationTokenSource.Dispose();
+                        cancellationTokenSource = new CancellationTokenSource();
+                        cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(timeoutInSeconds));
+                        await _client.ReconnectAsync(cancellationTokenSource.Token);
+                    }
+                    catch(OperationCanceledException)
+                    {
+                        _logService.LogInfo($"[MqttConnectionProvider] ... reconnecting timed out after {timeoutInSeconds}sec MqttClient");
+                    }
+                    catch (Exception ex)
+                    {
+                        _logService?.LogException(ex, "[MqttConnectionProvider] ... exception during reconnecting");
+                    }
                 }
 
                 spin.SpinOnce();
@@ -96,7 +113,7 @@ namespace CoolieMint.WebApp.Services.Mqtt
         {
             _logService.LogInfo($"[MqttConnectionProvider] ... MqttClient connected");
 
-            await _client.SubscribeAsync(new TopicFilterBuilder().WithTopic("#").Build());
+            await _client.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic("#").Build());
 
             _logService.LogInfo($"[MqttConnectionProvider] ... MqttTopic subscribed");
         }

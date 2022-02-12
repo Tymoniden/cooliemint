@@ -14,9 +14,10 @@ namespace CoolieMint.WebApp.Services.Mqtt
             _mqttConnectionProvider = mqttConnectionProvider ?? throw new ArgumentNullException(nameof(mqttConnectionProvider));
         }
 
-        public async Task StartAsync(CancellationToken cancellationToken)
+        public Task StartAsync(CancellationToken cancellationToken)
         {
-            await _mqttConnectionProvider.Start(cancellationToken);
+            Task.Run(() => _mqttConnectionProvider.Start(cancellationToken));
+            return Task.CompletedTask;
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)

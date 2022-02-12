@@ -4,11 +4,11 @@ namespace WebControlCenter.CommandAdapter.Enums
 {
     public class WeatherStatus : IAdapterStatusMessage
     {
-        public double Temperature { get; set; }
+        public decimal Temperature { get; set; }
 
-        public double Humidity { get; set; }
+        public int Humidity { get; set; }
 
-        public double Pressure { get; set; }
+        public int Pressure { get; set; }
 
         public DateTime TimeStamp { get; set; }
     }

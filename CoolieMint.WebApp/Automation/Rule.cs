@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace WebControlCenter.Automation
 {
     public class Rule
     {
-        public string Name { get; set; }
-        public Condition Condition { get; set; }
-        public List<IActionDescriptor> OnTrue { get; set; } = new List<IActionDescriptor>();
-        public List<IActionDescriptor> OnFalse { get; set; } = new List<IActionDescriptor>();
+        public long Id { get; set; }
+        public string DisplayName { get; set; }
+        public string Description { get; set; }
+        public DateTime? NextExecution { get; set; }
+        public ConditionContainer Condition { get; set; }
+        public List<IAutomationAction> OnTrue { get; set; } = new List<IAutomationAction>();
+        public List<IAutomationAction> OnFalse { get; set; } = new List<IAutomationAction>();
     }
-
 }

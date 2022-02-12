@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using CoolieMint.WebApp.Services;
+using CoolieMint.WebApp.Services.Automation;
+using CoolieMint.WebApp.Services.Storage;
 using MQTTnet;
 using WebControlCenter.CommandAdapter.Enums;
 using WebControlCenter.CommandAdapter.Temperature;
@@ -12,20 +15,21 @@ namespace WebControlCenter.CommandAdapter.Weather
     {
         private readonly IJsonSerializerService _jsonSerializerService;
         private readonly IEncodingService _encodingService;
-
+        private readonly IStateEntryMapper _stateEntryMapper;
+        private readonly ISystemStateCache _systemStateCache;
         private WeatherStatus _status;
         private WeatherAdapterInitializationArgument _weatherAdapterInitializationArgument;
 
-        public WeatherAdapter(IJsonSerializerService jsonSerializerService, IEncodingService encodingService)
-        {
-            _jsonSerializerService = jsonSerializerService;
-            _encodingService = encodingService;
-        }
-
         public WeatherAdapter(WeatherAdapterInitializationArgument weatherAdapterInitializationArgument,
             IJsonSerializerService jsonSerializerService,
-            IEncodingService encodingService) : this(jsonSerializerService, encodingService)
+            IEncodingService encodingService,
+            IStateEntryMapper stateEntryMapper,
+            ISystemStateCache systemStateCache)
         {
+            _jsonSerializerService = jsonSerializerService ?? throw new ArgumentNullException(nameof(jsonSerializerService));
+            _encodingService = encodingService ?? throw new ArgumentNullException(nameof(encodingService));
+            _stateEntryMapper = stateEntryMapper ?? throw new ArgumentNullException(nameof(stateEntryMapper));
+            _systemStateCache = systemStateCache ?? throw new ArgumentNullException(nameof(systemStateCache));
             _weatherAdapterInitializationArgument = weatherAdapterInitializationArgument;
         }
         
@@ -56,21 +60,16 @@ namespace WebControlCenter.CommandAdapter.Weather
                         _status = new WeatherStatus
                         {
                             Temperature = payload.Temperature,
-                            Humidity = payload.Humidity,
-                            Pressure = payload.Pressure,
+                            Humidity = Convert.ToInt32(payload.Humidity),
+                            Pressure = Convert.ToInt32(payload.Pressure),
                             TimeStamp = DateTime.Now
                         };
 
-                        Console.WriteLine($"Serialized: {decodedString}");
-                        Console.WriteLine(_status);
+                        _systemStateCache.AddStateEntry(_stateEntryMapper.Map(ToString(), _status));
                     }
                 }
-                catch(Exception e)
+                catch
                 {
-                    Console.WriteLine("Deserialize failed");
-                    Console.WriteLine(e);
-                    Console.WriteLine(e.StackTrace);
-                    // log message
                 }
             }
         }

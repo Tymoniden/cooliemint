@@ -14,7 +14,6 @@ namespace WebControlCenter.CommandAdapter.Temperature
         private readonly IMessageBroker _messageBroker;
         private double _temperature = 10.0;
         private DateTime _lastTemperatureChange;
-        private MqttControllerState _controllerState;
 
         public TemperatureAdapter(TemperatureInitializationArgument initializationArguments, IMessageBroker messageBroker)
         {

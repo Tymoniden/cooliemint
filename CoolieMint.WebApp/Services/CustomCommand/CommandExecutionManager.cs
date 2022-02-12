@@ -19,10 +19,11 @@ namespace CoolieMint.WebApp.Services.CustomCommand
             _customCommandService = customCommandService ?? throw new ArgumentNullException(nameof(customCommandService));
         }
 
-        public async Task StartAsync(CancellationToken cancellationToken)
+        public Task StartAsync(CancellationToken cancellationToken)
         {
             _cancellationTokenSource = new CancellationTokenSource();
             _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(20));
+            return Task.CompletedTask;
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)

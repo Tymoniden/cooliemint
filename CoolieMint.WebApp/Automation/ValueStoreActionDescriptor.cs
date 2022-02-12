@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace WebControlCenter.Automation
 {
-    public class ValueStoreActionDescriptor : IActionDescriptor
+    public class ValueStoreActionDescriptor : IAutomationAction
     {
         public string Key { get; set; }
         public string Value { get; set; }

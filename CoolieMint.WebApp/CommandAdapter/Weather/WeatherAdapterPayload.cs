@@ -2,8 +2,8 @@
 {
     public class WeatherAdapterPayload
     {
-        public double Temperature { get; set; }
-        public double Humidity { get; set; }
-        public double Pressure { get; set; }
+        public decimal Temperature { get; set; }
+        public decimal Humidity { get; set; }
+        public decimal Pressure { get; set; }
     }
 }

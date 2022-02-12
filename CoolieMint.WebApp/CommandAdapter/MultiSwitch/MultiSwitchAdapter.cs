@@ -1,4 +1,5 @@
-﻿using MQTTnet;
+﻿using CoolieMint.WebApp.Services.Storage;
+using MQTTnet;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ namespace WebControlCenter.CommandAdapter.MultiSwitch
     public class MultiSwitchAdapter : IMqttAdapter
     {
         IMessageBroker _messageBroker;
+        private readonly IStateEntryMapper _stateEntryMapper;
+        private readonly ISystemStateCache _systemStateCache;
         MultiSwitchInitializationArgument _initializationArgument;
         DateTime _lastSwitchUpdate;
 
@@ -19,10 +22,15 @@ namespace WebControlCenter.CommandAdapter.MultiSwitch
         readonly Dictionary<int, PowerSocketState> _switchStatus = new Dictionary<int, PowerSocketState>();
         // TODO: rename to SwitchStatus and SwitchState
 
-        public MultiSwitchAdapter(MultiSwitchInitializationArgument initializationArgument, IMessageBroker messageBroker)
+        public MultiSwitchAdapter(MultiSwitchInitializationArgument initializationArgument,
+            IMessageBroker messageBroker,
+            IStateEntryMapper stateEntryMapper,
+            ISystemStateCache systemStateCache)
         {
-            _initializationArgument = initializationArgument;
-            _messageBroker = messageBroker;
+            _initializationArgument = initializationArgument ?? throw new ArgumentNullException(nameof(initializationArgument));
+            _messageBroker = messageBroker ?? throw new ArgumentNullException(nameof(messageBroker));
+            _stateEntryMapper = stateEntryMapper ?? throw new ArgumentNullException(nameof(stateEntryMapper));
+            _systemStateCache = systemStateCache ?? throw new ArgumentNullException(nameof(systemStateCache));
             Identifier = initializationArgument.Identifier;
 
             Setup();
@@ -60,7 +68,9 @@ namespace WebControlCenter.CommandAdapter.MultiSwitch
                 var fullState = JsonConvert.DeserializeObject<int[]>(Encoding.UTF8.GetString(eventArguments.ApplicationMessage.Payload));
                 for (int i = -1; i < _initializationArgument.NumSwitches-1; i++)
                 {
-                    _switchStatus[_initializationArgument.StartIndex + i +1] = fullState[_initializationArgument.StartIndex + i] == 1 ? PowerSocketState.On : PowerSocketState.Off;
+                    var index = _initializationArgument.StartIndex + i + 1;
+                    _switchStatus[index] = fullState[_initializationArgument.StartIndex + i] == 1 ? PowerSocketState.On : PowerSocketState.Off;
+                    _systemStateCache.AddStateEntry(_stateEntryMapper.Map($"{this}/{index}", _switchStatus[index]));
                 }
                 _lastSwitchUpdate = DateTime.Now;
             } 
@@ -74,6 +84,8 @@ namespace WebControlCenter.CommandAdapter.MultiSwitch
                 // TODO: decide if I want to verify index range
                 _switchStatus[index] = value == 1 ? PowerSocketState.On : PowerSocketState.Off;
                 _lastSwitchUpdate = DateTime.Now;
+
+                _systemStateCache.AddStateEntry(_stateEntryMapper.Map($"{this}/{index}", _switchStatus[index]));
             }
         }
 
@@ -111,9 +123,6 @@ namespace WebControlCenter.CommandAdapter.MultiSwitch
         }
 
         public override string ToString() => $"Mqtt:MultiSwitchAdapter:{_initializationArgument.Identifier}";
-
-        public static MultiSwitchAdapter CreateAdapter(MultiSwitchInitializationArgument arguments, IMessageBroker messageBroker) =>
-            new MultiSwitchAdapter(arguments, messageBroker);
 
         public List<IControllerState> GetPossibleStates()
         {

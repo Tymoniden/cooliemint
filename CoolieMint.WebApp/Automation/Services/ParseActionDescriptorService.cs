@@ -6,9 +6,9 @@ namespace WebControlCenter.Automation.Services
 {
     public class ParseActionDescriptorService : IParseActionDescriptorService
     {
-        public List<IActionDescriptor> ParseActionDescriptors(JArray array)
+        public List<IAutomationAction> ParseActionDescriptors(JArray array)
         {
-            var actionDescriptors = new List<IActionDescriptor>();
+            var actionDescriptors = new List<IAutomationAction>();
             foreach (var jObect in array)
             {
                 actionDescriptors.Add(ParseActionDescriptor((JObject)jObect));
@@ -17,7 +17,7 @@ namespace WebControlCenter.Automation.Services
             return actionDescriptors;
         }
 
-        public IActionDescriptor ParseActionDescriptor(JObject jObject)
+        public IAutomationAction ParseActionDescriptor(JObject jObject)
         {
             var typeString = jObject["Type"].ToString();
             var type = Enum.Parse(typeof(ActionDescriptorType), typeString);
@@ -33,7 +33,7 @@ namespace WebControlCenter.Automation.Services
         }
 
         // TODO auslagern?
-        public IActionDescriptor ValueStoreActionDescriptorFromJObject(JObject jObject)
+        public IAutomationAction ValueStoreActionDescriptorFromJObject(JObject jObject)
         {
             var actionDescriptor = new ValueStoreActionDescriptor();
             actionDescriptor.Key = jObject["Key"].ToString();
@@ -43,7 +43,7 @@ namespace WebControlCenter.Automation.Services
         }
 
         // TODO auslagern?
-        public IActionDescriptor MqttActionDescriptorFromJObject(JObject jObject)
+        public IAutomationAction MqttActionDescriptorFromJObject(JObject jObject)
         {
             var actionDescriptor = new MqttActionDescriptor();
             actionDescriptor.Topic = jObject["Topic"].ToString();

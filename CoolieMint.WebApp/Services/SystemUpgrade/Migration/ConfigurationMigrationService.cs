@@ -131,7 +131,7 @@ namespace CoolieMint.WebApp.Services.SystemUpgrade.Migration
                 _fileSystemService.CopyFile(sourceSettingsFile, destinationSettingsFile, true);
                 return true;
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 return false;
             }

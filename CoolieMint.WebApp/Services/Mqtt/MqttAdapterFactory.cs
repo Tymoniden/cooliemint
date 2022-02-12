@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using CoolieMint.WebApp.Services.Storage;
+using Newtonsoft.Json.Linq;
 using System;
 using WebControlCenter.CommandAdapter;
 using WebControlCenter.CommandAdapter.MultiSwitch;
@@ -20,6 +21,8 @@ namespace CoolieMint.WebApp.Services.Mqtt
         readonly IMqttAdapterDbService _mqttAdapterDbService;
         readonly IControllerStateService _controllerStateService;
         readonly IModelFactory _modelFactory;
+        readonly IStateEntryMapper _stateEntryMapper;
+        readonly ISystemStateCache _systemStateCache;
 
         public MqttAdapterFactory(
             IMessageBroker messageBroker,
@@ -27,14 +30,18 @@ namespace CoolieMint.WebApp.Services.Mqtt
             IEncodingService encodingService,
             IMqttAdapterDbService mqttAdapterDbService,
             IControllerStateService controllerStateService,
-            IModelFactory modelFactory)
+            IModelFactory modelFactory,
+            IStateEntryMapper stateEntryMapper,
+            ISystemStateCache systemStateCache)
         {
-            _messageBroker = messageBroker;
-            _jsonSerializerService = jsonSerializerService;
-            _encodingService = encodingService;
+            _messageBroker = messageBroker ?? throw new ArgumentNullException(nameof(messageBroker));
+            _jsonSerializerService = jsonSerializerService ?? throw new ArgumentNullException(nameof(jsonSerializerService));
+            _encodingService = encodingService ?? throw new ArgumentNullException(nameof(encodingService));
             _mqttAdapterDbService = mqttAdapterDbService ?? throw new ArgumentNullException(nameof(mqttAdapterDbService));
             _controllerStateService = controllerStateService ?? throw new ArgumentNullException(nameof(controllerStateService));
             _modelFactory = modelFactory ?? throw new ArgumentNullException(nameof(modelFactory));
+            _stateEntryMapper = stateEntryMapper ?? throw new ArgumentNullException(nameof(stateEntryMapper));
+            _systemStateCache = systemStateCache ?? throw new ArgumentNullException(nameof(systemStateCache));
         }
 
         public IMqttAdapter CreateMqttAdapter(MqttAdapterEntry mqttAdapterEntry)
@@ -61,11 +68,15 @@ namespace CoolieMint.WebApp.Services.Mqtt
         WeatherAdapter CreateWeatherAdapter(JObject arguments) =>
             new WeatherAdapter(arguments.ToObject<WeatherAdapterInitializationArgument>(),
                 _jsonSerializerService,
-                _encodingService);
+                _encodingService,
+                _stateEntryMapper,
+                _systemStateCache);
 
         MultiSwitchAdapter CreateMultiSwitchAdapter(JObject arguments) =>
             new MultiSwitchAdapter(arguments.ToObject<MultiSwitchInitializationArgument>(),
-                _messageBroker);
+                _messageBroker,
+                _stateEntryMapper,
+                _systemStateCache);
 
         ShowCaseAdapter CreateShowCaseAdapter(JObject arguments) =>
             new ShowCaseAdapter(arguments.ToObject<ShowCaseInitializationArgument>(),

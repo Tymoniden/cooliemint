@@ -1,3 +1,4 @@
+using CoolieMint.WebApp.Services.Automation;
 using CoolieMint.WebApp.Services.CustomCommand;
 using CoolieMint.WebApp.Services.Mqtt;
 using CoolieMint.WebApp.Services.Notification.Pushover;
@@ -43,6 +44,8 @@ namespace WebControlCenter
                 {
                     services.AddHostedService<CommandExecutionManager>();
                     services.AddHostedService<MqttConnectionProviderService>();
+                    services.AddHostedService<AutomationService>();
+                    services.AddHostedService<AutomationRulesWorker>();
                 });
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace WebControlCenter.Automation
 {
-    public class MqttActionDescriptor : IActionDescriptor
+    public class MqttActionDescriptor : IAutomationAction
     {
         public string Topic { get; set; }
         public string Body { get; set; }

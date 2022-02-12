@@ -22,7 +22,6 @@ namespace WebControlCenter.CommandAdapter.Sonoff
         PowerSocketState _powerSocketState;
         DateTime _lastPowerSocketChange;
         MqttControllerState _controllerState;
-        Controller _controller;
 
         public SonoffAdapter(
             SonoffInitializationArgument initializationArguments,

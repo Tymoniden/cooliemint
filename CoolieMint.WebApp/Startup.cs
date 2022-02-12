@@ -1,9 +1,16 @@
+using CoolieMint.WebApp.Automation.Conditions;
+using CoolieMint.WebApp.Automation.Conditions.Temperature;
+using CoolieMint.WebApp.Automation.Conditions.Time;
+using CoolieMint.WebApp.Automation.Conditions.ValueStore;
 using CoolieMint.WebApp.Services;
+using CoolieMint.WebApp.Services.Automation;
+using CoolieMint.WebApp.Services.Automation.ActionHandlerServices;
 using CoolieMint.WebApp.Services.CustomCommand;
 using CoolieMint.WebApp.Services.FileSystem;
 using CoolieMint.WebApp.Services.Http;
 using CoolieMint.WebApp.Services.Mqtt;
 using CoolieMint.WebApp.Services.Notification.Pushover;
+using CoolieMint.WebApp.Services.Storage;
 using CoolieMint.WebApp.Services.SystemUpgrade;
 using CoolieMint.WebApp.Services.SystemUpgrade.Migration;
 using Microsoft.AspNetCore.Builder;
@@ -16,13 +23,13 @@ using MQTTnet.Client.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading.Tasks;
+using WebControlCenter.Automation;
 using WebControlCenter.CommandAdapter;
+using WebControlCenter.CommandAdapter.Enums;
 using WebControlCenter.Database.Repository;
 using WebControlCenter.Database.Services;
 using WebControlCenter.Repository;
 using WebControlCenter.Services;
-using WebControlCenter.Services.Control;
 using WebControlCenter.Services.CustomCommand;
 using WebControlCenter.Services.Database;
 using WebControlCenter.Services.FileSystem;
@@ -72,7 +79,6 @@ namespace WebControlCenter
             services.AddSingleton<IMqttCommandAdapter, MqttCommandAdapter>();
             services.AddSingleton<IAdapterService, AdapterService>();
             services.AddSingleton<IAdapterSettingService, AdapterSettingService>();
-            services.AddSingleton<IAdapterFactory, AdapterFactory>();
             services.AddSingleton<IFileSystemService, FileSystemService>();
             services.AddSingleton<ICompressionService, CompressionService>();
             services.AddSingleton<IDirectoryProvider, DirectoryProvider>();
@@ -84,6 +90,22 @@ namespace WebControlCenter
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
             services.AddSingleton<ICommandExecutionQueueService, CommandExecutionQueueService>();
             services.AddSingleton<ICommandExecutionManager, CommandExecutionManager>();
+
+            // State cache
+            services.AddSingleton<ISystemStateCache, SystemStateCache>();
+            services.AddSingleton<IStateEntryFactory, StateEntryFactory>();
+            services.AddSingleton<IStateEntryMapper, StateEntryMapper>();
+
+            // Automation
+            services.AddSingleton<IAutomationEntryQueueService, AutomationEntryQueueService>();
+            services.AddSingleton<IAutomationRulesStore, AutomationRulesStore>();
+            services.AddSingleton<IAutomationRulesConditionValidator, AutomationRulesConditionValidator>();
+            services.AddSingleton<IAutomationEntryFactory, AutomationEntryFactory>();
+            services.AddSingleton<IMqttActionHandler, MqttActionHandler>();
+            services.AddSingleton<IActionMapperService, ActionMapperService>();
+            services.AddSingleton<ITimeInterpreterService, TimeInterpreterService>();
+            services.AddSingleton<IValueStoreInterpreterService, ValueStoreInterpreterService>();
+            services.AddSingleton<ITemperatureInterpreterService, TemperatureInterpreterService>();
 
             // Migration services
             services.AddSingleton<IConfigurationMigrationService, ConfigurationMigrationService>();
@@ -112,7 +134,6 @@ namespace WebControlCenter
             services.AddSingleton<IUserFactory, UserFactory>();
             services.AddSingleton<IPageFactory, PageFactory>();
             services.AddSingleton<IControlFactory, ControlFactory>();
-            services.AddSingleton<IStateCacheService, StateCacheService>();
 
             // Custom commands
             services.AddSingleton<ICustomCommandService, CustomCommandService>();
@@ -120,7 +141,7 @@ namespace WebControlCenter
             services.AddSingleton<ICommandExecutionService, CommandExecutionService>();
             services.AddSingleton<ICommandFactory, CommandFactory>();
             services.AddSingleton<ICustomCommandConfigurationService, CustomCommandConfigurationService>();
-            
+
             // Http
             services.AddSingleton<IHttpContentFactory, HttpContentFactory>();
 
@@ -218,6 +239,86 @@ namespace WebControlCenter
 
             ConfigureSystemSpecifics(app.ApplicationServices);
             customCommandConfigurationService.ReloadConfiguration();
+            ServiceLocatorService.Instance.RegisterContainer(app.ApplicationServices);
+
+            // Dummy automation
+            app.ApplicationServices.GetService<IAutomationRulesStore>().AddRule(new Rule
+            {
+                Id = 0,
+                DisplayName = "Heizung an 7:00-18:00",
+                Condition = new ConditionContainer
+                {
+                    ChainType = ChainType.AND,
+                    Conditions = new List<ICondition>
+                    {
+                        new TimeLaterCondition
+                        {
+                            Time = new TimeSpan(07,00,00),
+                        },
+                        new TimeEarlierCondition
+                        {
+                            Time = new TimeSpan(18,00,00),
+                        },
+                        new ValueStoreCondition
+                        {
+                            Key = "Mqtt:MultiSwitchAdapter:1/5",
+                            Value = false
+                        },
+                        new TemperaturLowerCondition
+                        {
+                            SensorIdentifier = "Mqtt:WeatherAdapter:1",
+                            Temperature = 20.3M
+                        }
+                    }
+                },
+                OnTrue = new List<IAutomationAction>
+                {
+                    new MqttAction
+                    {
+                        Topic = "switch/1/5",
+                        Payload = "1"
+                    }
+                }
+            });
+
+            app.ApplicationServices.GetService<IAutomationRulesStore>().AddRule(new Rule
+            {
+                Id = 1,
+                DisplayName = "Heizung aus 7:00-18:00",
+                Condition = new ConditionContainer
+                {
+                    ChainType = ChainType.AND,
+                    Conditions = new List<ICondition>
+                    {
+                        new TimeLaterCondition
+                        {
+                            Time = new TimeSpan(07,00,00),
+                        },
+                        new TimeEarlierCondition
+                        {
+                            Time = new TimeSpan(18,00,00),
+                        },
+                        new ValueStoreCondition
+                        {
+                            Key = "Mqtt:MultiSwitchAdapter:1/5",
+                            Value = true
+                        },
+                        new TemperaturHigherCondition
+                        {
+                            SensorIdentifier = "Mqtt:WeatherAdapter:1",
+                            Temperature = 20.5M
+                        }
+                    }
+                },
+                OnTrue = new List<IAutomationAction>
+                {
+                    new MqttAction
+                    {
+                        Topic = "switch/1/5",
+                        Payload = "0"
+                    }
+                }
+            });
         }
 
         public void ConfigureSystemSpecifics(IServiceProvider serviceProvider)

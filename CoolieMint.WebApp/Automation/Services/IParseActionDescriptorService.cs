@@ -5,8 +5,8 @@ namespace WebControlCenter.Automation.Services
 {
     public interface IParseActionDescriptorService
     {
-        List<IActionDescriptor> ParseActionDescriptors(JArray array);
+        List<IAutomationAction> ParseActionDescriptors(JArray array);
 
-        IActionDescriptor ParseActionDescriptor(JObject jObject);
+        IAutomationAction ParseActionDescriptor(JObject jObject);
     }
 }
