@@ -1,6 +1,6 @@
 ﻿namespace CoolieMint.WebApp.Services.Automation.Rule.Conditions.Temperature
 {
-    public class TemperaturHigherCondition : ICondition, ITemperatureCondition
+    public class TemperatureLowerCondition : ICondition, ITemperatureCondition
     {
         public ConditionType ConditionType { get; set; } = ConditionType.Temperature;
         public bool IsInverted { get; set; }

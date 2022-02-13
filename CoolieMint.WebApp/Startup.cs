@@ -1,6 +1,7 @@
 using CoolieMint.WebApp.Services;
 using CoolieMint.WebApp.Services.Automation;
 using CoolieMint.WebApp.Services.Automation.ActionHandlerServices;
+using CoolieMint.WebApp.Services.Automation.Factories;
 using CoolieMint.WebApp.Services.Automation.Rule.Action;
 using CoolieMint.WebApp.Services.Automation.Rule.Conditions;
 using CoolieMint.WebApp.Services.Automation.Rule.Conditions.Temperature;
@@ -105,6 +106,10 @@ namespace WebControlCenter
             services.AddSingleton<ITimeInterpreterService, TimeInterpreterService>();
             services.AddSingleton<IValueStoreInterpreterService, ValueStoreInterpreterService>();
             services.AddSingleton<ITemperatureInterpreterService, TemperatureInterpreterService>();
+            services.AddSingleton<IAutomationActionFactory, AutomationActionFactory>();
+            services.AddSingleton<IAutomationConditionFactory, AutomationConditionFactory>();
+            services.AddSingleton<IAutomationDtoFactory, AutomationDtoFactory>();
+
 
             // Migration services
             services.AddSingleton<IConfigurationMigrationService, ConfigurationMigrationService>();
@@ -263,7 +268,7 @@ namespace WebControlCenter
                             Key = "Mqtt:MultiSwitchAdapter:1/5",
                             Value = false
                         },
-                        new TemperaturLowerCondition
+                        new TemperatureLowerCondition
                         {
                             SensorIdentifier = "Mqtt:WeatherAdapter:1",
                             Temperature = 20.3M
@@ -302,7 +307,7 @@ namespace WebControlCenter
                             Key = "Mqtt:MultiSwitchAdapter:1/5",
                             Value = true
                         },
-                        new TemperaturHigherCondition
+                        new TemperatureHigherCondition
                         {
                             SensorIdentifier = "Mqtt:WeatherAdapter:1",
                             Temperature = 20.4M

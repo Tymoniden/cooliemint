@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace CoolieMint.WebApp.Services.Automation
 {
+    // TODO rename to AutomationScenesStore or rename Scene
     public sealed class AutomationRulesStore : IAutomationRulesStore
     {
         readonly List<Scene> _scenes = new();

@@ -25,12 +25,12 @@ namespace CoolieMint.WebApp.Services.Automation.Rule.Conditions.Temperature
                 if (state.Value is WeatherState temperatureWeather)
                 {
                     var temperature = temperatureWeather.Temperature;
-                    if (condition is TemperaturHigherCondition)
+                    if (condition is TemperatureHigherCondition)
                     {
                         return temperature > temperatureCondition.Temperature;
                     }
 
-                    if (condition is TemperaturLowerCondition)
+                    if (condition is TemperatureLowerCondition)
                     {
                         return temperature < temperatureCondition.Temperature;
                     }

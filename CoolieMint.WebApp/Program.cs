@@ -29,7 +29,7 @@ namespace WebControlCenter
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder
-                        .UseUrls("http://*:80;http://*:8888;http://*:9999")
+                        .UseUrls("http://*:7777")
                         .UseKestrel(options =>
                         {
                             options.Limits.MaxRequestBodySize = 100000000;
