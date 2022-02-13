@@ -1,4 +1,4 @@
-﻿using WebControlCenter.Automation;
+﻿using CoolieMint.WebApp.Services.Automation.Rule.Action;
 
 namespace CoolieMint.WebApp.Services.Automation.ActionHandlerServices
 {

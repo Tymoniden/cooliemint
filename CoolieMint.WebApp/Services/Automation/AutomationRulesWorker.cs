@@ -40,7 +40,7 @@ namespace CoolieMint.WebApp.Services.Automation
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                foreach (var rule in _automationRulesStore.GetRules())
+                foreach (var rule in _automationRulesStore.GetScenes())
                 {
                     var wasExecuted = false;
                     if (_automationRulesConditionValidator.CanExecute(rule.Condition))

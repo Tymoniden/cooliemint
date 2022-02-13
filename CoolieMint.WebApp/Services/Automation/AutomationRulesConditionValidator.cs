@@ -1,9 +1,8 @@
-﻿using CoolieMint.WebApp.Automation.Conditions;
-using CoolieMint.WebApp.Automation.Conditions.Temperature;
-using CoolieMint.WebApp.Automation.Conditions.Time;
-using CoolieMint.WebApp.Automation.Conditions.ValueStore;
+﻿using CoolieMint.WebApp.Services.Automation.Rule.Conditions;
+using CoolieMint.WebApp.Services.Automation.Rule.Conditions.Temperature;
+using CoolieMint.WebApp.Services.Automation.Rule.Conditions.Time;
+using CoolieMint.WebApp.Services.Automation.Rule.Conditions.ValueStore;
 using System;
-using WebControlCenter.Automation;
 
 namespace CoolieMint.WebApp.Services.Automation
 {

@@ -48,6 +48,11 @@ namespace CoolieMint.WebApp.Services.Storage
             return entry;
         }
 
+        public List<StateEntry> GetAll()
+        {
+            return _stateEntries;
+        }
+
         public void CleanUp()
         {
             for (int i = _stateEntries.Count - 1; i >= 0; i--)

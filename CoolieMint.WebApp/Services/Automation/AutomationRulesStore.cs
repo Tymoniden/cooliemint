@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using WebControlCenter.Automation;
 
 namespace CoolieMint.WebApp.Services.Automation
 {
     public sealed class AutomationRulesStore : IAutomationRulesStore
     {
-        readonly List<Rule> _rules = new();
+        readonly List<Scene> _scenes = new();
         private readonly IDateTimeProvider _dateTimeProvider;
 
         public AutomationRulesStore(IDateTimeProvider dateTimeProvider)
@@ -14,14 +13,14 @@ namespace CoolieMint.WebApp.Services.Automation
             _dateTimeProvider = dateTimeProvider ?? throw new System.ArgumentNullException(nameof(dateTimeProvider));
         }
 
-        public void AddRule(Rule rule, bool replace = true)
+        public void AddScene(Scene rule, bool replace = true)
         {
-            var existingRule = _rules.FirstOrDefault(r => r.Id == rule.Id);
+            var existingRule = _scenes.FirstOrDefault(r => r.Id == rule.Id);
             if (existingRule != null)
             {
                 if (replace)
                 {
-                    _rules.Remove(existingRule);
+                    _scenes.Remove(existingRule);
                 }
                 else
                 {
@@ -29,9 +28,9 @@ namespace CoolieMint.WebApp.Services.Automation
                 }
             }
 
-            _rules.Add(rule);
+            _scenes.Add(rule);
         }
 
-        public List<Rule> GetRules() => _rules.Where(rule => rule.NextExecution == null || rule.NextExecution < _dateTimeProvider.Now()).ToList();
+        public List<Scene> GetScenes() => _scenes.Where(rule => rule.NextExecution == null || rule.NextExecution < _dateTimeProvider.Now()).ToList();
     }
 }

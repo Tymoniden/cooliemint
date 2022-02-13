@@ -1,5 +1,5 @@
-﻿using System;
-using WebControlCenter.Automation;
+﻿using CoolieMint.WebApp.Services.Automation.Rule.Action;
+using System;
 
 namespace CoolieMint.WebApp.Services.Automation
 {

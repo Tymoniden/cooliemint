@@ -1,10 +1,11 @@
-using CoolieMint.WebApp.Automation.Conditions;
-using CoolieMint.WebApp.Automation.Conditions.Temperature;
-using CoolieMint.WebApp.Automation.Conditions.Time;
-using CoolieMint.WebApp.Automation.Conditions.ValueStore;
 using CoolieMint.WebApp.Services;
 using CoolieMint.WebApp.Services.Automation;
 using CoolieMint.WebApp.Services.Automation.ActionHandlerServices;
+using CoolieMint.WebApp.Services.Automation.Rule.Action;
+using CoolieMint.WebApp.Services.Automation.Rule.Conditions;
+using CoolieMint.WebApp.Services.Automation.Rule.Conditions.Temperature;
+using CoolieMint.WebApp.Services.Automation.Rule.Conditions.Time;
+using CoolieMint.WebApp.Services.Automation.Rule.Conditions.ValueStore;
 using CoolieMint.WebApp.Services.CustomCommand;
 using CoolieMint.WebApp.Services.FileSystem;
 using CoolieMint.WebApp.Services.Http;
@@ -23,9 +24,7 @@ using MQTTnet.Client.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using WebControlCenter.Automation;
 using WebControlCenter.CommandAdapter;
-using WebControlCenter.CommandAdapter.Enums;
 using WebControlCenter.Database.Repository;
 using WebControlCenter.Database.Services;
 using WebControlCenter.Repository;
@@ -242,7 +241,7 @@ namespace WebControlCenter
             ServiceLocatorService.Instance.RegisterContainer(app.ApplicationServices);
 
             // Dummy automation
-            app.ApplicationServices.GetService<IAutomationRulesStore>().AddRule(new Rule
+            app.ApplicationServices.GetService<IAutomationRulesStore>().AddScene(new Scene
             {
                 Id = 0,
                 DisplayName = "Heizung an 7:00-18:00",
@@ -281,7 +280,7 @@ namespace WebControlCenter
                 }
             });
 
-            app.ApplicationServices.GetService<IAutomationRulesStore>().AddRule(new Rule
+            app.ApplicationServices.GetService<IAutomationRulesStore>().AddScene(new Scene
             {
                 Id = 1,
                 DisplayName = "Heizung aus 7:00-18:00",
@@ -306,7 +305,7 @@ namespace WebControlCenter
                         new TemperaturHigherCondition
                         {
                             SensorIdentifier = "Mqtt:WeatherAdapter:1",
-                            Temperature = 20.5M
+                            Temperature = 20.4M
                         }
                     }
                 },

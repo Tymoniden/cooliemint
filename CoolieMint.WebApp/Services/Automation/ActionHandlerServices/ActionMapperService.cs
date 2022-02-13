@@ -1,26 +1,25 @@
-﻿using System;
-using WebControlCenter.Automation;
+﻿using CoolieMint.WebApp.Services.Automation.Rule.Action;
+using System;
 
-namespace CoolieMint.WebApp.Services.Automation.ActionHandlerServices
+namespace CoolieMint.WebApp.Services.Automation.ActionHandlerServices;
+
+public class ActionMapperService : IActionMapperService
 {
-    public class ActionMapperService : IActionMapperService
+    private readonly IMqttActionHandler _mqttActionHandler;
+
+    public ActionMapperService(IMqttActionHandler mqttActionHandler)
     {
-        private readonly IMqttActionHandler _mqttActionHandler;
+        _mqttActionHandler = mqttActionHandler ?? throw new ArgumentNullException(nameof(mqttActionHandler));
+    }
 
-        public ActionMapperService(IMqttActionHandler mqttActionHandler)
+    public void HandleAction(IAutomationAction action)
+    {
+        if (action is MqttAction mqttAction)
         {
-            _mqttActionHandler = mqttActionHandler ?? throw new ArgumentNullException(nameof(mqttActionHandler));
+            _mqttActionHandler.HandleAction(mqttAction);
+            return;
         }
 
-        public void HandleAction(IAutomationAction action)
-        {
-            if (action is MqttAction mqttAction)
-            {
-                _mqttActionHandler.HandleAction(mqttAction);
-                return;
-            }
-
-            throw new ArgumentException(nameof(action));
-        }
+        throw new ArgumentException(nameof(action));
     }
 }
