@@ -1,0 +1,88 @@
+[
+  {
+    "Id": 0,
+    "DisplayName": "Heizung an 7:00-18:00",
+    "Description": null,
+    "NextExecution": null,
+    "Condition": {
+      "ChainType": 0,
+      "Conditions": [
+        {
+          "ConditionType": 1,
+          "Time": "07:00:00",
+          "IsInverted": false
+        },
+        {
+          "ConditionType": 1,
+          "Time": "18:00:00",
+          "IsInverted": false
+        },
+        {
+          "ConditionType": 0,
+          "IsInverted": false,
+          "Key": "Mqtt:MultiSwitchAdapter:1/5",
+          "Value": false
+        },
+        {
+          "ConditionType": 4,
+          "IsInverted": false,
+          "Temperature": 20.3,
+          "SensorIdentifier": "Mqtt:WeatherAdapter:1"
+        }
+      ],
+      "ChildConditions": [
+      ]
+    },
+    "OnTrue": [
+      {
+        "Topic": "switch/1/5",
+        "Payload": "1"
+      }
+    ],
+    "OnFalse": [
+    ]
+  },
+  {
+    "Id": 1,
+    "DisplayName": "Heizung aus 7:00-18:00",
+    "Description": null,
+    "NextExecution": null,
+    "Condition": {
+      "ChainType": 0,
+      "Conditions": [
+        {
+          "ConditionType": 1,
+          "Time": "07:00:00",
+          "IsInverted": false
+        },
+        {
+          "ConditionType": 1,
+          "Time": "18:00:00",
+          "IsInverted": false
+        },
+        {
+          "ConditionType": 0,
+          "IsInverted": false,
+          "Key": "Mqtt:MultiSwitchAdapter:1/5",
+          "Value": true
+        },
+        {
+          "ConditionType": 4,
+          "IsInverted": false,
+          "Temperature": 20.4,
+          "SensorIdentifier": "Mqtt:WeatherAdapter:1"
+        }
+      ],
+      "ChildConditions": [
+      ]
+    },
+    "OnTrue": [
+      {
+        "Topic": "switch/1/5",
+        "Payload": "0"
+      }
+    ],
+    "OnFalse": [
+    ]
+  }
+]

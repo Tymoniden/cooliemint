@@ -25,7 +25,7 @@ namespace WebControlCenter.Database.Services
                 var controller = _modelFactory.CreateController();
                 controller.Identifier = adapter.Identifier;
                 controller.Type = adapter.Type;
-                controller.InitializationArguments = _jsonSerializerService.Serialize(adapter.GetInitializationArguments());
+                controller.InitializationArguments = _jsonSerializerService.Serialize(adapter.GetInitializationArguments(), SerializerSettings.ApiSerializer);
 
                 foreach(var state in adapter.GetPossibleStates())
                 {
@@ -51,7 +51,7 @@ namespace WebControlCenter.Database.Services
                     var controller = _modelFactory.CreateController();
                     controller.Identifier = adapter.Identifier;
                     controller.Type = adapter.Type;
-                    controller.InitializationArguments = _jsonSerializerService.Serialize(adapter.GetInitializationArguments());
+                    controller.InitializationArguments = _jsonSerializerService.Serialize(adapter.GetInitializationArguments(), SerializerSettings.ApiSerializer);
 
                     foreach (var state in adapter.GetPossibleStates())
                     {

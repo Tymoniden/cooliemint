@@ -16,6 +16,11 @@ namespace CoolieMint.WebApp.Services.Automation
 
         public void AddScene(Scene rule, bool replace = true)
         {
+            if (rule.Id == 0 && _scenes.Any())
+            {
+                rule.Id = _scenes.Select(s => s.Id).Max() + 1;
+            }
+
             var existingRule = _scenes.FirstOrDefault(r => r.Id == rule.Id);
             if (existingRule != null)
             {

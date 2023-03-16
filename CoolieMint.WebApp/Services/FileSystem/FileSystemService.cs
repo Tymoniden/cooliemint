@@ -23,7 +23,7 @@ namespace CoolieMint.WebApp.Services.FileSystem
             }
         }
 
-        public string CombinePath(string path1, string path2) => Path.Combine(path1, path2);
+        public string CombinePath(params string[] filesystemEntries) => Path.Combine(filesystemEntries);
 
         public void CopyFile(string sourceFile, string destinationFile, bool @override)
         {
@@ -57,8 +57,6 @@ namespace CoolieMint.WebApp.Services.FileSystem
                 return Path.Combine(_hostingEnvironment.ContentRootPath, path);
             }
         }
-
-        public string GetConfigurationPath() => Path.Combine(_hostingEnvironment.ContentRootPath, "configuration");
 
         public long GetFolderContentSize(string path)
         {

@@ -9,13 +9,16 @@ namespace CoolieMint.WebApp.Services.SystemUpgrade
 {
     public class CooliemintPackageService : ICooliemintPackageService
     {
-        private readonly IDirectoryProvider _directoryProvider;
-        private readonly ICompressionService _compressionService;
-        private readonly ILogService _logService;
+        const string LibraryName = "CoolieMint.WebApp.dll";
+        readonly IDirectoryProvider _directoryProvider;
+        readonly IFileSystemService _fileSystemService;
+        readonly ICompressionService _compressionService;
+        readonly ILogService _logService;
 
-        public CooliemintPackageService(IDirectoryProvider directoryProvider, ICompressionService compressionService, ILogService logService)
+        public CooliemintPackageService(IDirectoryProvider directoryProvider, IFileSystemService fileSystemService, ICompressionService compressionService, ILogService logService)
         {
             _directoryProvider = directoryProvider ?? throw new ArgumentNullException(nameof(directoryProvider));
+            _fileSystemService = fileSystemService ?? throw new ArgumentNullException(nameof(fileSystemService));
             _compressionService = compressionService ?? throw new ArgumentNullException(nameof(compressionService));
             _logService = logService ?? throw new ArgumentNullException(nameof(logService));
         }
@@ -28,7 +31,7 @@ namespace CoolieMint.WebApp.Services.SystemUpgrade
                 using (var memoryStream = new MemoryStream(package))
                 {
                     var archive = new ZipArchive(memoryStream, ZipArchiveMode.Read);
-                    var entry = archive.GetEntry("CoolieMint.WebApp.dll");
+                    var entry = archive.GetEntry(LibraryName);
 
                     var targetFile = Path.Combine(Path.GetTempPath(), entry.Name);
                     if (File.Exists(targetFile))
@@ -58,7 +61,7 @@ namespace CoolieMint.WebApp.Services.SystemUpgrade
         {
             if (TryInspectVersion(content, out Version version))
             {
-                var destinationFolder = _directoryProvider.RelativeContentRoot("..", $"CoolieMint_{version}");
+                var destinationFolder = _fileSystemService.CombinePath(_directoryProvider.GetContentRoot(), "..", $"CoolieMint_{version}");
 
                 using (var memoryStream = new MemoryStream(content))
                 {

@@ -30,7 +30,7 @@ namespace CoolieMint.WebApp.Services.Notification.Pushover
                 var message = new HttpRequestMessage(HttpMethod.Post, _serverUri);
 
                 var pushoverHttpContent = _pushoverHttpContentFactory.CreateHttpContent(appNotification, applicationKey, userKey);
-                var jsonContent = _jsonSerializerService.Serialize(pushoverHttpContent);
+                var jsonContent = _jsonSerializerService.Serialize(pushoverHttpContent, SerializerSettings.ApiSerializer);
                 message.Content = _httpContentFactory.CreateJsonStringContent(jsonContent);
 
                 return message;

@@ -10,8 +10,8 @@ namespace WebControlCenter.Services.Setting
 
         public SettingsProvider(IFileSystemService fileSystemService, IJsonSerializerService jsonSerializerService)
         {
-            _fileSystemService = fileSystemService ?? throw new global::System.ArgumentNullException(nameof(fileSystemService));
-            _jsonSerializerService = jsonSerializerService ?? throw new global::System.ArgumentNullException(nameof(jsonSerializerService));
+            _fileSystemService = fileSystemService ?? throw new System.ArgumentNullException(nameof(fileSystemService));
+            _jsonSerializerService = jsonSerializerService ?? throw new System.ArgumentNullException(nameof(jsonSerializerService));
         }
 
         public Settings GetSettings() => _settings;

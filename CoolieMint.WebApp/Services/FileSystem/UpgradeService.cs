@@ -15,9 +15,7 @@ namespace CoolieMint.WebApp.Services.FileSystem
 
         public void SavePackage(string version, byte[] content)
         {
-            var destinationFolder = _directoryProvider.RelativeWebRoot("..");
-            var destinationFilename = _fileSystemService.CombinePath(destinationFolder, $"Cooliemint_{version}");
-
+            var destinationFilename = _fileSystemService.CombinePath(_directoryProvider.GetWebRoot(), ".." , $"Cooliemint_{version}");
             _fileSystemService.WriteAllBytes(destinationFilename, content);
         }
     }

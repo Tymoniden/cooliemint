@@ -61,7 +61,7 @@ namespace WebControlCenter.Database.Services
             var controller = _entityFactory.CreateController();
             controller.Identifier = mqttAdapter.Identifier;
             controller.Type = mqttAdapter.Type;
-            controller.InitializationArguments = _jsonSerializerService.Serialize(mqttAdapter.GetInitializationArguments());
+            controller.InitializationArguments = _jsonSerializerService.Serialize(mqttAdapter.GetInitializationArguments(), SerializerSettings.ApiSerializer);
 
             ctx.Add(controller);
 

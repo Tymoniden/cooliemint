@@ -6,10 +6,9 @@ namespace CoolieMint.WebApp.Services.FileSystem
     public interface IFileSystemService
     {
         void AppendAllText(string path, string text);
-        string CombinePath(string path1, string path2);
+        string CombinePath(params string[] filesystemEntries);
         DirectoryInfo CreateDirectory(string path);
         bool DirectoryExists(string directory);
-        string GetConfigurationPath();
         List<FileInfo> GetFilesInFolder(string path);
         long GetFileSize(string path);
         long GetFolderContentSize(string path);

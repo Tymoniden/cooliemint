@@ -2,8 +2,10 @@ using CoolieMint.WebApp.Services;
 using CoolieMint.WebApp.Services.Automation;
 using CoolieMint.WebApp.Services.Automation.ActionHandlerServices;
 using CoolieMint.WebApp.Services.Automation.Factories;
+using CoolieMint.WebApp.Services.Automation.Rule;
 using CoolieMint.WebApp.Services.Automation.Rule.Action;
 using CoolieMint.WebApp.Services.Automation.Rule.Conditions;
+using CoolieMint.WebApp.Services.Automation.Rule.Conditions.Date;
 using CoolieMint.WebApp.Services.Automation.Rule.Conditions.Temperature;
 using CoolieMint.WebApp.Services.Automation.Rule.Conditions.Time;
 using CoolieMint.WebApp.Services.Automation.Rule.Conditions.ValueStore;
@@ -57,37 +59,43 @@ namespace WebControlCenter
         {
             services.AddControllersWithViews();
 
-            services.AddSingleton<ISystemInteractionService, SystemInteractionService>();
-
-            services.AddSingleton<IFolderService, FolderService>();
-            services.AddSingleton<ILogFileService, LogFileService>();
-
-            services.AddSingleton<ILogMessageFactory, LogMessageFactory>();
-            services.AddSingleton<ILogFormatterService, LogFormatterService>();
-            services.AddSingleton<ILogService, LogService>();
-
+            // Framework wrapper
             services.AddSingleton<IJsonSerializerService, JsonSerializerService>();
             services.AddSingleton<IEncodingService, EncodingService>();
             services.AddSingleton<IConverterService, ConverterService>();
-            services.AddSingleton<IControlModelService, ControlModelService>();
+            services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
+            // Logger
+            services.AddSingleton<ILogFileService, LogFileService>();
+            services.AddSingleton<ILogMessageFactory, LogMessageFactory>();
+            services.AddSingleton<ILogFormatterService, LogFormatterService>();
+            services.AddSingleton<ILogService, LogService>();
+            services.AddSingleton<IFolderService, FolderService>();
+
+            services.AddSingleton<ISystemInteractionService, SystemInteractionService>();
+            services.AddSingleton<IControlModelService, ControlModelService>();
             services.AddSingleton<IMqttRepository, MqttRepository>();
             services.AddSingleton<IMqttValueProvider, MqttValueProvider>();
             services.AddSingleton<IMessageBroker, MessageBroker>();
             services.AddSingleton<IMessageBrokerMessageArgumentFactory, MessageBrokerMessageArgumentFactory>();
 
+            // Filesystem
+            services.AddSingleton<IFileSystemService, FileSystemService>();
+            services.AddSingleton<IDirectoryProvider, DirectoryProvider>();
+            services.AddSingleton<IDirectoryService, DirectoryService>();
+            services.AddSingleton<IJsonPersistenceService, JsonPersistenceService>();
+            services.AddSingleton<IFileNameProvider, FileNameProvider>();
+
             services.AddSingleton<IMqttCommandAdapter, MqttCommandAdapter>();
             services.AddSingleton<IAdapterService, AdapterService>();
             services.AddSingleton<IAdapterSettingService, AdapterSettingService>();
-            services.AddSingleton<IFileSystemService, FileSystemService>();
             services.AddSingleton<ICompressionService, CompressionService>();
-            services.AddSingleton<IDirectoryProvider, DirectoryProvider>();
             services.AddSingleton<IUiConfigurationService, UiConfigurationService>();
             services.AddSingleton<IMqttAdapterFactory, MqttAdapterFactory>();
             services.AddSingleton<IMqttAdapterService, MqttAdapterService>();
             services.AddSingleton<ISettingsProvider, SettingsProvider>();
             services.AddSingleton<ISettingsService, SettingsService>();
-            services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+
             services.AddSingleton<ICommandExecutionQueueService, CommandExecutionQueueService>();
             services.AddSingleton<ICommandExecutionManager, CommandExecutionManager>();
 
@@ -109,7 +117,8 @@ namespace WebControlCenter
             services.AddSingleton<IAutomationActionFactory, AutomationActionFactory>();
             services.AddSingleton<IAutomationConditionFactory, AutomationConditionFactory>();
             services.AddSingleton<IAutomationDtoFactory, AutomationDtoFactory>();
-
+            services.AddSingleton<IAutomationSceneService, AutomationSceneService>();
+            services.AddSingleton<IValueStoreActionHandler, ValueStoreActionHandler>();
 
             // Migration services
             services.AddSingleton<IConfigurationMigrationService, ConfigurationMigrationService>();
@@ -245,84 +254,131 @@ namespace WebControlCenter
             customCommandConfigurationService.ReloadConfiguration();
             ServiceLocatorService.Instance.RegisterContainer(app.ApplicationServices);
 
-            // Dummy automation
-            app.ApplicationServices.GetService<IAutomationRulesStore>().AddScene(new Scene
-            {
-                Id = 0,
-                DisplayName = "Heizung an 7:00-18:00",
-                Condition = new ConditionContainer
-                {
-                    ChainType = ChainType.AND,
-                    Conditions = new List<ICondition>
-                    {
-                        new TimeLaterCondition
-                        {
-                            Time = new TimeSpan(07,00,00),
-                        },
-                        new TimeEarlierCondition
-                        {
-                            Time = new TimeSpan(18,00,00),
-                        },
-                        new ValueStoreCondition
-                        {
-                            Key = "Mqtt:MultiSwitchAdapter:1/5",
-                            Value = false
-                        },
-                        new TemperatureLowerCondition
-                        {
-                            SensorIdentifier = "Mqtt:WeatherAdapter:1",
-                            Temperature = 20.3M
-                        }
-                    }
-                },
-                OnTrue = new List<IAutomationAction>
-                {
-                    new MqttAction
-                    {
-                        Topic = "switch/1/5",
-                        Payload = "1"
-                    }
-                }
-            });
+            //// Load persisted scenes
+            //try
+            //{
+            //    var scenes = app.ApplicationServices.GetService<IAutomationSceneService>().GetScenes();
+            //    foreach (var scene in scenes)
+            //    {
+            //        app.ApplicationServices.GetService<IAutomationRulesStore>().AddScene(scene);
+            //    }
 
-            app.ApplicationServices.GetService<IAutomationRulesStore>().AddScene(new Scene
-            {
-                Id = 1,
-                DisplayName = "Heizung aus 7:00-18:00",
-                Condition = new ConditionContainer
-                {
-                    ChainType = ChainType.AND,
-                    Conditions = new List<ICondition>
-                    {
-                        new TimeLaterCondition
-                        {
-                            Time = new TimeSpan(07,00,00),
-                        },
-                        new TimeEarlierCondition
-                        {
-                            Time = new TimeSpan(18,00,00),
-                        },
-                        new ValueStoreCondition
-                        {
-                            Key = "Mqtt:MultiSwitchAdapter:1/5",
-                            Value = true
-                        },
-                        new TemperatureHigherCondition
-                        {
-                            SensorIdentifier = "Mqtt:WeatherAdapter:1",
-                            Temperature = 20.4M
-                        }
-                    }
-                },
-                OnTrue = new List<IAutomationAction>
-                {
-                    new MqttAction
-                    {
-                        Topic = "switch/1/5",
-                        Payload = "0"
-                    }
-                }
-            });
+            //    logService.Log(LogSeverity.Info, $"[Startup] Loaded {scenes.Count} scenes.");
+            //}
+            //catch (Exception e)
+            //{
+            //    logService.LogException(e, "[Startup] An error occurred during loading of the persisted scenes.");
+            //}
+
+
+            //// Dummy automation
+            //app.ApplicationServices.GetService<IAutomationRulesStore>().AddScene(new Scene
+            //{
+            //    DisplayName = "Test 456",
+            //    Condition = new ConditionContainer
+            //    {
+            //        ChainType = ChainType.AND,
+            //        Conditions =
+            //        {
+            //            new WeekDayCondition
+            //            {
+            //                WeekDays = WeekDay.Monday | WeekDay.Tuesday | WeekDay.Wednesday | WeekDay.Thursday | WeekDay.Friday
+            //            },
+            //            new TimeLaterCondition
+            //            {
+            //                Time = new TimeSpan(07,00,00),
+            //            },
+            //            new ValueStoreCondition
+            //            {
+            //                Key = "Automatic heating",
+            //                Value = true
+            //            },
+            //        }
+            //    },
+            //    OnTrue = new List<IAutomationAction>
+            //    {
+                    
+            //    }
+            //});
+
+
+            //app.ApplicationServices.GetService<IAutomationRulesStore>().AddScene(new Scene
+            //{
+            //    Id = 0,
+            //    DisplayName = "Heizung an 7:00-18:00",
+            //    Condition = new ConditionContainer
+            //    {
+            //        ChainType = ChainType.AND,
+            //        Conditions = new List<ICondition>
+            //        {
+            //            new TimeLaterCondition
+            //            {
+            //                Time = new TimeSpan(07,00,00),
+            //            },
+            //            new TimeEarlierCondition
+            //            {
+            //                Time = new TimeSpan(18,00,00),
+            //            },
+            //            new ValueStoreCondition
+            //            {
+            //                Key = "Mqtt:MultiSwitchAdapter:1/5",
+            //                Value = false
+            //            },
+            //            new TemperatureLowerCondition
+            //            {
+            //                SensorIdentifier = "Mqtt:WeatherAdapter:1",
+            //                Temperature = 20.8M
+            //            }
+            //        }
+            //    },
+            //    OnTrue = new List<IAutomationAction>
+            //    {
+            //        new MqttAction
+            //        {
+            //            Topic = "switch/1/5",
+            //            Payload = "1"
+            //        }
+            //    }
+            //});
+
+            //app.ApplicationServices.GetService<IAutomationRulesStore>().AddScene(new Scene
+            //{
+            //    Id = 1,
+            //    DisplayName = "Heizung aus 7:00-18:00",
+            //    Condition = new ConditionContainer
+            //    {
+            //        ChainType = ChainType.AND,
+            //        Conditions = new List<ICondition>
+            //        {
+            //            new TimeLaterCondition
+            //            {
+            //                Time = new TimeSpan(07,00,00),
+            //            },
+            //            new TimeEarlierCondition
+            //            {
+            //                Time = new TimeSpan(18,00,00),
+            //            },
+            //            new ValueStoreCondition
+            //            {
+            //                Key = "Mqtt:MultiSwitchAdapter:1/5",
+            //                Value = true
+            //            },
+            //            new TemperatureHigherCondition
+            //            {
+            //                SensorIdentifier = "Mqtt:WeatherAdapter:1",
+            //                Temperature = 20.8M
+            //            }
+            //        }
+            //    },
+            //    OnTrue = new List<IAutomationAction>
+            //    {
+            //        new MqttAction
+            //        {
+            //            Topic = "switch/1/5",
+            //            Payload = "0"
+            //        }
+            //    }
+            //});
         }
 
         public void ConfigureSystemSpecifics(IServiceProvider serviceProvider)

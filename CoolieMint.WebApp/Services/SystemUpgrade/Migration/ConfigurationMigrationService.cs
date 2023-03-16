@@ -9,15 +9,16 @@ namespace CoolieMint.WebApp.Services.SystemUpgrade.Migration
 {
     public class ConfigurationMigrationService : IConfigurationMigrationService
     {
-        const string MigrationFileName = "migration.txt";
-        private readonly IDirectoryProvider _directoryProvider;
-        private readonly IFileSystemService _fileSystemService;
-        private readonly ILogService _logService;
+        readonly IDirectoryProvider _directoryProvider;
+        readonly IFileSystemService _fileSystemService;
+        readonly IFileNameProvider _fileNameProvider;
+        readonly ILogService _logService;
 
-        public ConfigurationMigrationService(IDirectoryProvider directoryProvider, IFileSystemService fileSystemService, ILogService logService)
+        public ConfigurationMigrationService(IDirectoryProvider directoryProvider, IFileSystemService fileSystemService, IFileNameProvider fileNameProvider, ILogService logService)
         {
             _directoryProvider = directoryProvider ?? throw new ArgumentNullException(nameof(directoryProvider));
             _fileSystemService = fileSystemService ?? throw new ArgumentNullException(nameof(fileSystemService));
+            _fileNameProvider = fileNameProvider ?? throw new ArgumentNullException(nameof(fileNameProvider));
             _logService = logService ?? throw new ArgumentNullException(nameof(logService));
         }
 
@@ -63,14 +64,14 @@ namespace CoolieMint.WebApp.Services.SystemUpgrade.Migration
 
         private void WriteMigrationFile(string predecessorFolder)
         {
-            var path = _directoryProvider.RelativeContentRoot(MigrationFileName);
+            var path = _fileNameProvider.GetMigrationFile();
             _fileSystemService.WriteAllText(path, predecessorFolder);
             
         }
 
         private bool IsMigrationNecessary()
         {
-            var path = _directoryProvider.RelativeContentRoot(MigrationFileName);
+            var path = _fileNameProvider.GetMigrationFile();
             if (_fileSystemService.FileExists(path))
             {
                 return false;
@@ -109,9 +110,8 @@ namespace CoolieMint.WebApp.Services.SystemUpgrade.Migration
 
         bool MigrateConfigurationFolder(string predecessorApplicationFolder, string currentApplicationFolder)
         {
-            
-            var predecessorConfigurationFolder = Path.Combine(predecessorApplicationFolder, "configuration");
-            var currentConfigurationFolder = Path.Combine(currentApplicationFolder, "configuration");
+            var predecessorConfigurationFolder = _fileSystemService.CombinePath(predecessorApplicationFolder, FileNames.ConfigurationFolder);
+            var currentConfigurationFolder = _fileSystemService.CombinePath(currentApplicationFolder, FileNames.ConfigurationFolder);
 
             if (_fileSystemService.TryCopyFolder(predecessorConfigurationFolder, currentConfigurationFolder))
             {
@@ -123,8 +123,8 @@ namespace CoolieMint.WebApp.Services.SystemUpgrade.Migration
 
         bool MigrateSettingsFile(string predecessorApplicationFolder, string currentApplicationFolder)
         {
-            var sourceSettingsFile = Path.Combine(predecessorApplicationFolder, "settings.json");
-            var destinationSettingsFile = Path.Combine(currentApplicationFolder, "settings.json");
+            var sourceSettingsFile = _fileSystemService.CombinePath(predecessorApplicationFolder, FileNames.SettingsFiles);
+            var destinationSettingsFile = _fileSystemService.CombinePath(currentApplicationFolder, FileNames.SettingsFiles);
 
             try
             {

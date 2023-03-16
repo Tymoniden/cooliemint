@@ -4,6 +4,6 @@
     {
         T Deserialize<T>(string content);
 
-        string Serialize(object content);
+        string Serialize(object content, SerializerSettings serializerSettings);
     }
 }

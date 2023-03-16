@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
@@ -14,9 +15,9 @@ namespace CoolieMint.WebApp.Services.FileSystem
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public string GetWebRoot() => _webHostEnvironment.WebRootPath;
+        public string GetConfiguration() => Path.Combine(GetContentRoot(), "configuration");
 
-        public string RelativeWebRoot(params string[] folders) => GetRelativeFolder(GetWebRoot(), folders);
+        public string GetWebRoot() => _webHostEnvironment.WebRootPath;
 
         public string GetContentRoot()
         {
@@ -28,14 +29,7 @@ namespace CoolieMint.WebApp.Services.FileSystem
             return _webHostEnvironment.ContentRootPath;
         }
 
-        public string RelativeContentRoot(params string[] folders) => GetRelativeFolder(GetContentRoot(), folders);
 
         public string GetParentSystemFolder() => Path.Combine(GetContentRoot(), "..");
-
-        string GetRelativeFolder(string root, string[] relativeFolders)
-        {
-            var relativeFolder = string.Join(Path.DirectorySeparatorChar, relativeFolders);
-            return Path.Combine(root, relativeFolder);
-        }
     }
 }

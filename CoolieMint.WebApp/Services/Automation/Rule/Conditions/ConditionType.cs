@@ -4,6 +4,7 @@
     {
         ValueStore,
         Time,
+        WeekDay,
         Date,
         Weekday,
         Temperature
