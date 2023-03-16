@@ -1,0 +1,13 @@
+{
+  "LogDirectory": "Logs",
+  "MqttServerAdress": "192.168.2.128",
+  "MqttClientId": "CoolieMint_WebApp_dev_v3",
+  "MqttClientUsername": null,
+  "MqttClientPassword": null,
+  "PushOverAccounts": [
+    {
+      "Userkey": "",
+      "ApplicationKey": ""
+    }
+  ]
+}
