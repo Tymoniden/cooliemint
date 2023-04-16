@@ -1,4 +1,5 @@
 .vs/*
+CoolieMint.sln.DotSettings.user
 /WebApp/.vs/*
 /WebApp/bin/*
 /WebApp/obj/*
@@ -11,6 +12,12 @@
 /Desktop/obj/*
 /Desktop/.vs/*
 CoolieMint.Api/obj*
+CoolieMint.Api/Client/bin/*
+CoolieMint.Api/Client/obj/*
+CoolieMint.Api/Server/bin/*
+CoolieMint.Api/Server/obj/*
+CoolieMint.Api/Shared/bin/*
+CoolieMint.Api/Shared/obj/*
 CoolieMint.Starter/bin/*
 CoolieMint.Starter/obj/*
 CoolieMint.WebApp.Tests/bin/*
