@@ -11,6 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoolieMint.Starter", "Cooli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoolieMint.Updater", "CoolieMint.Updater\CoolieMint.Updater.csproj", "{BA4D013D-BE41-4785-ADD2-15DB4245A05F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cooliemint.Api.Server", "Cooliemint.Api\Server\Cooliemint.Api.Server.csproj", "{72B7B872-6231-4010-9B04-4F4C02B2E488}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cooliemint.Api.Client", "Cooliemint.Api\Client\Cooliemint.Api.Client.csproj", "{EC196CEB-B0EC-4BB3-8C40-E4BF23DED1C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cooliemint.Api.Shared", "Cooliemint.Api\Shared\Cooliemint.Api.Shared.csproj", "{91164C5E-C551-4B4C-91B8-027C92639A6C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +39,18 @@ Global
 		{BA4D013D-BE41-4785-ADD2-15DB4245A05F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA4D013D-BE41-4785-ADD2-15DB4245A05F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA4D013D-BE41-4785-ADD2-15DB4245A05F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72B7B872-6231-4010-9B04-4F4C02B2E488}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72B7B872-6231-4010-9B04-4F4C02B2E488}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72B7B872-6231-4010-9B04-4F4C02B2E488}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72B7B872-6231-4010-9B04-4F4C02B2E488}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC196CEB-B0EC-4BB3-8C40-E4BF23DED1C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC196CEB-B0EC-4BB3-8C40-E4BF23DED1C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC196CEB-B0EC-4BB3-8C40-E4BF23DED1C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC196CEB-B0EC-4BB3-8C40-E4BF23DED1C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91164C5E-C551-4B4C-91B8-027C92639A6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91164C5E-C551-4B4C-91B8-027C92639A6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91164C5E-C551-4B4C-91B8-027C92639A6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91164C5E-C551-4B4C-91B8-027C92639A6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,7 +6,10 @@
     <UserSecretsId>d04fb6a7-1760-4088-97ea-0bf7769f9e5e</UserSecretsId>
     <AssemblyVersion>1.8.5.0</AssemblyVersion>
     <FileVersion>1.8.5.0</FileVersion>
+    <ContainerImageTags>1.8.5;latest</ContainerImageTags>
     <AssemblyName>CoolieMint.WebApp</AssemblyName>
+    <PublishProfile>DefaultContainer</PublishProfile>
+    <ContainerImageName>tymoniden/cooliemint</ContainerImageName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +20,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
+    <PackageReference Include="Microsoft.NET.Build.Containers" Version="0.3.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
     <PackageReference Include="MQTTnet.AspNetCore" Version="3.1.2" />
   </ItemGroup>
